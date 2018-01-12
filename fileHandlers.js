@@ -25,25 +25,19 @@ const serveRegularFile = function(req, resp) {
 };
 
 const redirectInvalidUser = function(resp) {
-  resp.setHeader('Set-Cookie', 'logInFailed=true; Max-Age=5');
   resp.redirect('loginPage.html');
 }
-
-const showLoginFailed=function () {
-  document.getElementById('hidden_mess').style.visibility = "visible"
-};
 
 const serveLoginPage=function (req,resp) {
   let filePath = req.url;
   console.log(resp.cookie);
   resp.setHeader('Content-Type', getContentType(filePath))
   fs.readFile('./public/login.html', (error, data) => {
-    if (resp.cookie.includes("logInFailed=true")) {
+    if (!req.cookies.sessionid) {
+      data.replace("isvalidUser","not valid user ")
       resp.serve(data);
-      showLoginFailed();
     }
     resp.serve(data);
-
   });
 }
 
@@ -64,7 +58,6 @@ const SetCookie = function(resp,user) {
 }
 
 const handleLogin=function (req,resp) {
-  console.log("hello");
   let user = getValidUser(req);
   if (!user) return redirectInvalidUser(resp);
   SetCookie(resp,user);

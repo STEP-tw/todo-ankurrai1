@@ -1,0 +1,29 @@
+{
+  "name": "todo-ankurrai1",
+  "version": "1.0.0",
+  "description": "## Objective",
+  "main": "fileHandlers.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^4.1.2"
+  },
+  "devDependencies": {
+    "mocha": "^4.1.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/STEP-tw/todo-ankurrai1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/STEP-tw/todo-ankurrai1/issues"
+  },
+  "homepage": "https://github.com/STEP-tw/todo-ankurrai1#readme"
+}

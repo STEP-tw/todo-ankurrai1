@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 const getContentType = function(filePath) {
   let fileExt = filePath.split(".").slice(-1)[0];
   let headers = {
