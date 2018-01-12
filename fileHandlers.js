@@ -1,6 +1,14 @@
 const fs = require('fs');
 const  getContentType = require('./utils.js').getContentType;
 
+let validUsers = [{
+  userName: 'ankurrai',
+  password: 'ankur'
+}, {
+  userName: 'yogi',
+  password: 'yogi'
+}];
+
 const getHome=function (req,resp) {
   resp.redirect('index.html');
 };
