@@ -7,22 +7,25 @@ const create= require('./frameWork/frameWork.js').create;
 
 const loadUser=require('./fileHandlers.js').loadUser;
 const getHome=require('./fileHandlers.js').getHome;
+const serveLoginPage=require('./fileHandlers.js').serveLoginPage;
 const serveRegularFile=require('./fileHandlers.js').serveRegularFile;
 const loginGuestBook=require('./fileHandlers.js').loginGuestBook;
-const loginUser=require('./fileHandlers.js').loginUser;
+const handleLogin=require('./fileHandlers.js').handleLogin;
 const logoutUser=require('./fileHandlers.js').logoutUser;
 const storeCommentsAndRedirect=require('./fileHandlers.js').storeCommentsAndRedirect;
 const redirectLoggedInUserToHome=require('./fileHandlers.js').redirectLoggedInUserToHome;
 
 const app = create();
 
-app.get("/",getHome);
+app.preProcessUse(logAndStoreRequest);
 
+app.get("/",getHome);
+app.get("./loginPage.html",serveLoginPage);
+
+app.post('/login',handleLogin);
 
 
 app.postProcessUse(serveRegularFile);
-
-
 
 
 const server = http.createServer(app);
