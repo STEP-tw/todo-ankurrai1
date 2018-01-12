@@ -26,6 +26,7 @@ describe('app',()=>{
       })
     })
   })
+
   describe('GET /index.html',()=>{
     it('gives the index page',done=>{
       request(app,{method:'GET',url:'/index.html'},res=>{
@@ -36,6 +37,7 @@ describe('app',()=>{
       })
     })
   })
+
   describe('GET /image/todo.jpg',()=>{
     it('serves the image',done=>{
       request(app,{method:'GET',url:'/image/todo.jpg'},res=>{
@@ -45,17 +47,18 @@ describe('app',()=>{
       })
     })
   })
-  describe.skip('GET /scripts/flowerCatalog.js',()=>{
+
+  describe('GET /script/dataRander.js',()=>{
     it('serves the javascript source',done=>{
-      request(app,{method:'GET',url:'/scripts/flowerCatalog.js'},res=>{
+      request(app,{method:'GET',url:'/script/dataRander.js'},res=>{
         th.status_is_ok(res);
-        th.content_type_is(res,'text/javascript');
-        th.body_contains(res,'hidePot');
+        th.content_type_is(res,'text/js');
+        th.body_contains(res,'displayTodo');
         done();
       })
     })
   })
-  describe('GET /loginPage.html',()=>{
+  describe.skip('GET /loginPage.html',()=>{
     it('serves the login page',done=>{
       request(app,{method:'GET',url:'/loginPage.html'},res=>{
         th.status_is_ok(res);
@@ -73,6 +76,7 @@ describe('app',()=>{
         done();
       })
     })
+
     it('redirects to login.html with message for invalid user',done=>{
       request(app,{method:'POST',url:'/login',body:'username=badUser'},res=>{
         th.should_be_redirected_to(res,'/login.html');

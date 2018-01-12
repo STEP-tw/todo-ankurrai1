@@ -32,10 +32,10 @@ const serveLoginPage=function (req,resp) {
   let filePath = req.url;
   console.log(resp.cookie);
   resp.setHeader('Content-Type', getContentType(filePath))
-  fs.readFile('./public/login.html', (error, data) => {
+  fs.readFile('./public/loginPage.html', (error, data) => {
     if (!req.cookies.sessionid) {
-      data.replace("isvalidUser","not valid user ")
       resp.serve(data);
+      return;
     }
     resp.serve(data);
   });
