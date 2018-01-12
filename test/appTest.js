@@ -2,7 +2,7 @@ let chai = require('chai');
 let assert = chai.assert;
 let request = require('./requestSimulator.js');
 process.env.COMMENT_STORE = "./testStore.json";
-let app = require('../server.js').app;
+let app = require('../serverlib.js');
 let th = require('./testHelper.js');
 
 
