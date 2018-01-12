@@ -1,0 +1,17 @@
+#innerlayer {
+  width: 90%;
+  height: 100%;
+  font-family: sans-serif;
+  margin: 3% auto;
+}
+
+#heading {
+  text-align: right;
+}
+
+h1 {
+  font-size: 50px;
+  color: steelBlue;
+  border-bottom: 3px solid gray;
+  padding-bottom: 4px;
+}
