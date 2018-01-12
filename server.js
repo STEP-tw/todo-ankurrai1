@@ -3,7 +3,7 @@ const port = 3000;
 
 const logAndStoreRequest=require('./utils.js').logAndStoreRequest;
 
-const create= require('./frameWork.js').create;
+const create= require('./frameWork/frameWork.js').create;
 
 const loadUser=require('./fileHandlers.js').loadUser;
 const getHome=require('./fileHandlers.js').getHome;
@@ -19,7 +19,7 @@ const app = create();
 app.get("/",getHome);
 
 
-
+app.postProcessUse(serveRegularFile);
 
 
 

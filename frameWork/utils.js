@@ -5,12 +5,8 @@ const AddBehaviour = function(req, resp) {
   resp.writeError = writeError.bind(resp);
 };
 
-there a problem with middleware function,I have to change and refactore it;
-const middleware = function(req, resp, process) {
-  debugger;
-  if (resp.finished) return;
-  console.log(resp.finished,process);
-  process(req,resp);
+const urlIsOneOf = function(urls) {
+  return urls.includes(this.url);
 };
 
 const runProcessors = function(processors, req, resp) {

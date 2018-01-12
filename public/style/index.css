@@ -15,3 +15,14 @@ h1 {
   border-bottom: 3px solid gray;
   padding-bottom: 4px;
 }
+
+img {
+  height:30%;
+  width: 30%;
+}
+
+a {
+  font-size: 35px;
+  font-family: sans-serif;
+  font-weight: bold;
+}
