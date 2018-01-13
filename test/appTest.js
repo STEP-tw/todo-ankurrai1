@@ -58,7 +58,7 @@ describe('app',()=>{
       })
     })
   })
-  describe.skip('GET /loginPage.html',()=>{
+  describe('GET /loginPage.html',()=>{
     it('serves the login page',done=>{
       request(app,{method:'GET',url:'/loginPage.html'},res=>{
         th.status_is_ok(res);
@@ -68,18 +68,18 @@ describe('app',()=>{
     })
   })
 
-  describe.skip('POST /login',()=>{
-    it('redirects to guestBook for valid user',done=>{
-      request(app,{method:'POST',url:'/login',body:'username=arvind'},res=>{
-        th.should_be_redirected_to(res,'/guestBook');
-        th.should_not_have_cookie(res,'message');
+  describe('POST /login',()=>{
+    it('redirects to loginPage for invalid user',done=>{
+      request(app,{method:'POST',url:'/login',body:'userName=arvind'},res=>{
+        th.should_be_redirected_to(res,'loginPage.html');
+        th.should_not_have_cookie(res,'essage');
         done();
       })
     })
 
     it('redirects to login.html with message for invalid user',done=>{
       request(app,{method:'POST',url:'/login',body:'username=badUser'},res=>{
-        th.should_be_redirected_to(res,'/login.html');
+        th.should_be_redirected_to(res,'loginPage.html');
         th.should_have_expiring_cookie(res,'message','login failed');
         done();
       })

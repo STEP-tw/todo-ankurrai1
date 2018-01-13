@@ -34,7 +34,7 @@ const serveRegularFile = function(req, resp) {
 };
 
 const redirectInvalidUser = function(resp) {
-  resp.setHeader('Set-Cookie', `message=Login Failed; Max-Age=5`);
+  resp.setHeader('Set-Cookie', `message=login failed; Max-Age=5`);
   resp.redirect('loginPage.html');
 }
 
