@@ -48,11 +48,10 @@ const requestHandler = function(req, resp) {
   eventHandler.call(this, req, resp);
 };
 
-const requestlistener = function(req, resp) {
-  requestHandler.call(requestlistener, req, resp)
-};
-
 exports.create = function() {
+  let requestlistener = function(req, resp) {
+    requestHandler.call(requestlistener, req, resp)
+  };
   initialize.call(requestlistener);
   requestlistener.get = get;
   requestlistener.post = post;

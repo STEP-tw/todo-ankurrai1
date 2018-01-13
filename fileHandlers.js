@@ -1,5 +1,6 @@
 const fs = require('fs');
-const  getContentType = require('./utils.js').getContentType;
+
+const getContentType = require('./utils.js').getContentType;
 
 let validUsers = [{
   userName: 'ankurrai',
@@ -9,11 +10,19 @@ let validUsers = [{
   password: 'yogi'
 }];
 
-let session={};
+let session = {};
 
-const getHome=function (req,resp) {
+const getHome = function(req, resp) {
   resp.redirect('index.html');
 };
+
+const serveLoginPage = function(req, resp) {
+  let data = fs.readFileSync('./public/loginPage.html', 'utf8');
+  console.log(req.cookies.message);
+  data = data.replace('loginFailedMessage', req.cookies.message || '');
+  resp.setHeader('Content-Type', 'text/html');
+  resp.serve(data);
+}
 
 const serveRegularFile = function(req, resp) {
   let filePath = req.url;
@@ -25,20 +34,8 @@ const serveRegularFile = function(req, resp) {
 };
 
 const redirectInvalidUser = function(resp) {
+  resp.setHeader('Set-Cookie', `message=Login Failed; Max-Age=5`);
   resp.redirect('loginPage.html');
-}
-
-const serveLoginPage=function (req,resp) {
-  let filePath = req.url;
-  console.log(resp.cookie);
-  resp.setHeader('Content-Type', getContentType(filePath))
-  fs.readFile('./public/loginPage.html', (error, data) => {
-    if (!req.cookies.sessionid) {
-      resp.serve(data);
-      return;
-    }
-    resp.serve(data);
-  });
 }
 
 const getValidUser = function(req) {
@@ -49,26 +46,25 @@ const getValidUser = function(req) {
   });
 };
 
-const SetCookie = function(resp,user) {
+const setCookie = function(resp, user) {
   let sessionid = new Date().getTime();
   user.sessionid = sessionid;
-  session=user;
+  session = user;
   resp.setHeader('Set-Cookie', `sessionid=${sessionid}`);
   console.log(session);
 }
 
-const handleLogin=function (req,resp) {
+const handleLogin = function(req, resp) {
   let user = getValidUser(req);
-  if (!user) return redirectInvalidUser(resp);
-  SetCookie(resp,user);
-  resp.redirect('userHome.html')
+  console.log(user);
+  if (!user)
+  return redirectInvalidUser(resp);
+  setCookie(resp, user);
+  resp.redirect('userHome.html');
 };
 
 
-
-
-
-exports.serveLoginPage=serveLoginPage
-exports.handleLogin=handleLogin;
-exports.getHome=getHome;
-exports.serveRegularFile=serveRegularFile;
+exports.serveLoginPage = serveLoginPage
+exports.handleLogin = handleLogin;
+exports.getHome = getHome;
+exports.serveRegularFile = serveRegularFile;

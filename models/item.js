@@ -13,7 +13,7 @@ Item.prototype ={
   },
 
   getText:function(){
-    return this._title;
+    return this.text;
   },
 
   changetext:function(newText){

@@ -14,17 +14,14 @@ const redirectLoggedInUserToHome=require('./fileHandlers.js').redirectLoggedInUs
 
 const app = create();
 
-
 app.preProcessUse(logAndStoreRequest);
-// app.preProcessUse(loadUser);
-
 
 app.get("/",getHome);
+
 app.get("/loginPage.html",serveLoginPage);
-app.get("/logout",logoutUser);
+app.get("logout",logoutUser);
 
 app.post('/login',handleLogin);
-
 
 app.postProcessUse(serveRegularFile);
 
