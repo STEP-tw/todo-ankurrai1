@@ -11,6 +11,7 @@ const eventHandler = function(req, resp) {
   let content = "";
   req.on('data', data => content += data.toString());
   req.on('end', () => {
+    console.log(req.body);
     req.body = qs.parse(content);
     content = "";
     runProcessors(this.preProcess,req,resp);

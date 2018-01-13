@@ -18,7 +18,6 @@ const getHome = function(req, resp) {
 
 const serveLoginPage = function(req, resp) {
   let data = fs.readFileSync('./public/loginPage.html', 'utf8');
-  console.log(req.cookies.message);
   data = data.replace('loginFailedMessage', req.cookies.message || '');
   resp.setHeader('Content-Type', 'text/html');
   resp.serve(data);
@@ -51,19 +50,22 @@ const setCookie = function(resp, user) {
   user.sessionid = sessionid;
   session = user;
   resp.setHeader('Set-Cookie', `sessionid=${sessionid}`);
-  console.log(session);
 }
 
 const handleLogin = function(req, resp) {
   let user = getValidUser(req);
-  console.log(user);
   if (!user)
   return redirectInvalidUser(resp);
   setCookie(resp, user);
   resp.redirect('userHome.html');
 };
 
+const logoutUser=function (req,resp) {
+  resp.setHeader('Set-Cookie', `sessionid=0; Max-Age=0`);
+  resp.redirect('loginPage.html');
+};
 
+exports.logoutUser=logoutUser
 exports.serveLoginPage = serveLoginPage
 exports.handleLogin = handleLogin;
 exports.getHome = getHome;

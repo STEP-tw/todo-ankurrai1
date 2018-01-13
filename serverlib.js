@@ -19,7 +19,7 @@ app.preProcessUse(logAndStoreRequest);
 app.get("/",getHome);
 
 app.get("/loginPage.html",serveLoginPage);
-app.get("logout",logoutUser);
+app.get("/logout",logoutUser);
 
 app.post('/login',handleLogin);
 

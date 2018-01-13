@@ -70,9 +70,10 @@ describe('app',()=>{
 
   describe('POST /login',()=>{
     it('redirects to loginPage for invalid user',done=>{
-      request(app,{method:'POST',url:'/login',body:'userName=arvind'},res=>{
-        th.should_be_redirected_to(res,'loginPage.html');
-        th.should_not_have_cookie(res,'essage');
+      request(app, {method:'POST',url:'/login',body:'userName=ankurrai&password=ankur'},
+      res=>{
+        th.should_be_redirected_to(res,'userHome.html');
+        th.should_not_have_cookie(res,'message');
         done();
       })
     })
