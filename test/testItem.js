@@ -28,5 +28,5 @@ describe('Item', () => {
     let actual=item.markAsDone();
     assert.isOk(item.isItemDone());
   });
-  
+
 })
