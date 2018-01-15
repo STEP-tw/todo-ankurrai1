@@ -18,6 +18,10 @@ Item.prototype ={
 
   changetext:function(newText){
     this.text = newText;
+  },
+
+  deleteItem:function () {
+    delete this.text;
   }
 }
 

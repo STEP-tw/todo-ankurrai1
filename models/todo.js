@@ -13,6 +13,18 @@ SingleTodo.prototype = {
     this.items[++this.counter] = new Item(text);
   },
 
+  editAItem:function (counter,text) {
+    this.items[counter].changetext(text);
+  },
+
+  getItemStatus:function (counter) {
+    this.items[counter].isItemDone();
+  },
+
+  markItemAsDone:function (counter) {
+    this.items[counter].markAsDone();
+  },
+
   deleteAItem: function(counter) {
     delete this.items[counter];
   },
@@ -31,6 +43,10 @@ SingleTodo.prototype = {
 
   getTitle: function() {
     return this.title;
+  },
+
+  getDiscription:function () {
+    return this.description;
   },
 
   editDescription: function(newDescription) {

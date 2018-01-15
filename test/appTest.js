@@ -18,10 +18,10 @@ describe('app',()=>{
   })
 
   describe('GET /',()=>{
-    it('redirects to index.html',done=>{
+    it('should serve index.html',done=>{
       request(app,{method:'GET',url:'/'},(res)=>{
-        th.should_be_redirected_to(res,'index.html');
-        assert.equal(res.body,"");
+        th.status_is_ok(res);
+        th.body_contains(res,'TODO APP');
         done();
       })
     })

@@ -13,7 +13,8 @@ let validUsers = [{
 let session = {};
 
 const getHome = function(req, resp) {
-  resp.redirect('index.html');
+  let data = fs.readFileSync('./public/index.html', 'utf8');
+  resp.serve(data);
 };
 
 const serveLoginPage = function(req, resp) {
