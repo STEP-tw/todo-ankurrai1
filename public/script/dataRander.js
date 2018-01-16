@@ -9,7 +9,7 @@ const inSingleHtml = function(todo) {
 
 const intoTableRow = function(todoTitles) {
   let feedBack = "";
-  title += `<td><aref="oldTodo">${todoTitles}</a></td>`;
+  title += `<td><a ref="oldTodo ">${todoTitles}</a></td>`;
   return `<tr>${title}</tr>`;
 };
 <a href="#"></a>

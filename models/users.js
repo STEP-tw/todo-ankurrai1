@@ -1,9 +1,26 @@
 const fs = require('fs');
 const Todo = require('./todo.js');
 
-let Users = function(storagePath) {
+const getAllData = function(filePath) {
+  let usersData = fs.readFileSync(filePath, 'utf8');
+  return JSON.parse(usersData);
+};
+
+const storeAllData = function(filePath, content) {
+  let data = JSON.stringify(content, null, 1);
+  fs.writeFile(filePath, data, (err) => {
+    if (err) console.log(`storage ${filePath} not valid`);
+  });
+};
+
+const isUserAlreadyHaveATodo = function(usersTodo, userName) {
+  return Object.keys(usersTodo).includes(userName);
+};
+
+let Users = function(storagePath, registeredUsers) {
+  this.users = registeredUsers || getAllData('../data/validUsers.json');
   this.storagePath = storagePath;
-  this.usersTodos = getAllUsersTodo(storagePath);
+  this.usersTodos = getAllData(storagePath);
 };
 
 Users.prototype = {
@@ -20,26 +37,17 @@ Users.prototype = {
     return this.usersTodos[userName];
   },
 
-  addNewTodo: function(userName,title, description) {
-    let todo = new Todo(title, description);
-    this.usersTodos[userName][title] = todo;
+  addNewTodo: function(userName, title, description) {
+    if (isUserAlreadyHaveATodo(this.usersTodos, userName)) {
+      this.usersTodos[userName][title] = new Todo(title, description);
+      return
+    }
+    this.usersTodos[userName] = new Todo(title, description);
   },
 
-  storeData:function () {
-    storeAllUsersTodo(this.storagePath,this.usersTodos)
+  storeData: function() {
+    storeAllData(this.storagePath, this.usersTodos)
   }
-
 }
 
-const getAllUsersTodo = function(filePath) {
-  let usersData = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(usersData);
-};
-
-const storeAllUsersTodo = function(filePath, content) {
-  let data = JSON.stringify(content, null, 1);
-  fs.writeFile(filePath, data, (err) => {
-    if (err) console.log(`storage ${filePath} not valid`);
-  });
-};
 module.exports = Users;

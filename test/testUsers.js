@@ -2,10 +2,18 @@ let chai = require('chai');
 let assert = chai.assert;
 const Users = require('../models/users.js');
 
+let validUsers = [{
+  userName: 'ankurrai',
+  password: 'ankur'
+}, {
+  userName: 'yogi',
+  password: 'yogi'
+}];
+
 describe('Users', () => {
 
   beforeEach(() => {
-    users = new Users('./data/data.json');
+    users = new Users('./data/data.json',validUsers);
   });
 
   it('should return given users todo', () => {
