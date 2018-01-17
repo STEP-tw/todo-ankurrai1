@@ -14,7 +14,7 @@
       <h2>Todo List</h2>
       placeHolder
     </table>
-    <a href="newTodo.html">create new todo</a><br>
+    <a href="newTodo">create new todo</a><br>
     <a href="logout">Logout</a>
   </body>
 </html>

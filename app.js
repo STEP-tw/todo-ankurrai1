@@ -5,6 +5,7 @@ const create= require('./webApp.js').create;
 const loadUser=require('./fileHandlers.js').loadUser;
 const getHome=require('./fileHandlers.js').getHome;
 const serveLanding=require('./fileHandlers.js').serveLanding;
+const handleNewTodo=require('./fileHandlers.js').handleNewTodo;
 const serveRegularFile=require('./fileHandlers.js').serveRegularFile;
 const loginGuestBook=require('./fileHandlers.js').loginGuestBook;
 const handleLogin=require('./fileHandlers.js').handleLogin;
@@ -36,10 +37,10 @@ const app = create();
 app.preProcessUse(logAndStoreRequest);
 
 app.get("/",serveLanding);
-
 app.get("/login",serveLanding);
 app.get("/home",serveHomePage);
 app.get("/logout",logoutUser);
+app.get('/newTodo',handleNewTodo)
 
 app.post('/login',handleLogin);
 

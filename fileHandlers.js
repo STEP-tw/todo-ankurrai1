@@ -69,7 +69,6 @@ const serveRegularFile = function(req, resp) {
 };
 
 const serveHomePage = function(req, resp) {
-  console.log();
   if (!req.cookies.sessionid){
     redirectInvalidUser(resp)
     return;
@@ -115,6 +114,12 @@ const logoutUser = function(req, resp) {
   resp.redirect('login');
 };
 
+const handleNewTodo=function (req,resp) {
+  let fileContent=fs.readFileSync('./public/newTodo','utf8');
+  resp.serve(fileContent)
+};
+
+exports.handleNewTodo=handleNewTodo;
 exports.serveHomePage = serveHomePage;
 exports.logoutUser = logoutUser;
 exports.serveLanding = serveLanding;
