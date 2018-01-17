@@ -2,7 +2,7 @@ let chai = require('chai');
 let assert = chai.assert;
 const Item = require('../models/item.js');
 
-let item={};
+let item = {};
 
 describe('Item', () => {
   beforeEach(() => {
@@ -10,22 +10,21 @@ describe('Item', () => {
   });
 
   it('should return for item not done', () => {
-    assert.isOk(!item.isItemDone());
     assert.isNotOk(item.isItemDone());
   });
 
   it('should update text to new text', () => {
-    item.changetext("hello")
-    assert.equal(item.text,"hello");
+    item.changeText("hello")
+    assert.equal(item.text, "hello");
   });
 
   it('should give text of item', () => {
-    let actual=item.getText();
-    assert.equal(actual,'this is a text');
+    let actual = item.getText();
+    assert.equal(actual, 'this is a text');
   });
 
   it('should mark item as done', () => {
-    let actual=item.markAsDone();
+    let actual = item.markAsDone();
     assert.isOk(item.isItemDone());
   });
 

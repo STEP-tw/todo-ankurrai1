@@ -18,7 +18,7 @@ const isUserAlreadyHaveATodo = function(usersTodo, userName) {
 };
 
 let Users = function(storagePath, registeredUsers) {
-  this.users = registeredUsers || getAllData('../data/validUsers.json');
+  this.users = registeredUsers;
   this.storagePath = storagePath;
   this.usersTodos = getAllData(storagePath);
 };
@@ -44,10 +44,6 @@ Users.prototype = {
     }
     this.usersTodos[userName] = new Todo(title, description);
   },
-
-  storeData: function() {
-    storeAllData(this.storagePath, this.usersTodos)
-  }
 }
 
 module.exports = Users;

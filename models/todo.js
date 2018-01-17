@@ -14,7 +14,7 @@ SingleTodo.prototype = {
   },
 
   editAItem:function (counter,text) {
-    this.items[counter].changetext(text);
+    this.items[counter].changeText(text);
   },
 
   getItemStatus:function (counter) {

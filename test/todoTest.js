@@ -25,37 +25,37 @@ describe('todo', () => {
     todo.addItem("this is a item");
     todo.addItem("this is a newItem");
     todo.addItem("this is another item");
-    let actule=Object.keys(todo.getAllItem()).length
-    assert.equal(actule,3);
+    let actual=Object.keys(todo.getAllItem()).length
+    assert.equal(actual,3);
   });
 
-  it('should should give the title of todo', () => {
-    let actule=todo.getTitle();
-    assert.equal(actule,"hello");
+  it('should give the title of todo', () => {
+    let actual=todo.getTitle();
+    assert.equal(actual,"hello");
   });
 
   it('should replace title with new one', () => {
     todo.retitle("ankur");
-    let actule=todo.getTitle();
-    assert.equal(actule,"ankur");
+    let actual=todo.getTitle();
+    assert.equal(actual,"ankur");
   });
 
-  it('should should give the discription of todo', () => {
-    let actule=todo.getDiscription();
-    assert.equal(actule,"there is a discription");
+  it('should give the discription of todo', () => {
+    let actual=todo.getDiscription();
+    assert.equal(actual,"there is a discription");
   });
 
   it('should replace discription with new one', () => {
     todo.editDescription("newDiscription");
-    let actule=todo.getDiscription();
-    assert.equal(actule,"newDiscription");
+    let actual=todo.getDiscription();
+    assert.equal(actual,"newDiscription");
   });
 
   it('should replace text Of item', () => {
     todo.addItem("this is a item");
     todo.editAItem(1,"replaced text");
-    let actule=todo.getAItem(1).text;
-    assert.equal(actule,"replaced text");
+    let actual=todo.getAItem(1).text;
+    assert.equal(actual,"replaced text");
   });
 
   it('should give status of item as done or not', () => {
@@ -68,4 +68,5 @@ describe('todo', () => {
     todo.markItemAsDone(1);
     assert.isOk(todo.getAItem(1).isItemDone());
   });
+
 })

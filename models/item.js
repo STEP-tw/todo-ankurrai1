@@ -16,13 +16,9 @@ Item.prototype ={
     return this.text;
   },
 
-  changetext:function(newText){
+  changeText:function(newText){
     this.text = newText;
   },
-
-  deleteItem:function () {
-    delete this.text;
-  }
 }
 
 module.exports = Item;

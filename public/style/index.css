@@ -5,15 +5,15 @@
   margin: 3% auto;
 }
 
-#heading {
-  text-align: right;
-}
-
 h1 {
   font-size: 50px;
   color: steelBlue;
   border-bottom: 3px solid gray;
   padding-bottom: 4px;
+}
+h3 {
+  font-size: 30px;
+  color: steelBlue;
 }
 
 h2 {
@@ -24,16 +24,23 @@ h2 {
 }
 
 img {
-  height:30%;
-  width: 30%;
+  float: left;
+  height: 40%;
+  width: 40%;
 }
 
 a {
-  font-size: 35px;
   font-family: sans-serif;
   font-weight: bold;
 }
 
-#hidden_mess {
-   visibility: hidden;
+#form {
+  float: right;
+  width: 50%;
+};
+
+.titles {
+  font-size: 20px;
+  font-family: sans-serif;
+  color: steelBlue;
 }

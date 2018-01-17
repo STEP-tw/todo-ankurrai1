@@ -7,12 +7,14 @@
     <script src="./src/data.js" charset="utf-8"></script>
     <title></title>
   </head>
-  <body onload="displayTodo()">
+  <body onload="displayTodos()">
     <h1>User Home</h1>
+    <h3>Welcome user</h3>
     <table>
       <h2>Todo List</h2>
+      placeHolder
     </table>
-    <a href="newTodo.html">create new todo</a>
+    <a href="newTodo.html">create new todo</a><br>
     <a href="logout">Logout</a>
   </body>
 </html>

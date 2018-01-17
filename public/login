@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="/style/index.css">
-  </head>
-  <body>
-    <div>
+
+<head>
+  <meta charset="utf-8">
+  <title>todo_app</title>
+  <link rel="stylesheet" href="style/index.css">
+</head>
+
+<body>
+  <div id="innerlayer">
+    <h1>TODO APP</h1>
+    <img id="todoimage" src="image/todo.jpg" alt="todoimage">
+    <div id="form">
       <h2>Write Your Name And Password to Login</h2>
       <form action="login" method="POST">
         <label> Name : </label><input type="text" name="userName" value="" required><br><br>
         <label> Password : </label><input type="password" name="password" value="" required><br><br>
         <input id="submit" type="submit" value="submit">
       </form>
+      <br>
+      <h2>loginFailedMessage</h2>
     </div>
-    <br><br><br>
-    <a href="index.html"> Go To Home</a>
-      <h1>loginFailedMessage</h1>
-  </body>
+  </div>
+</body>
+
 </html>

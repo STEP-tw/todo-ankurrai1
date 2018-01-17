@@ -4,23 +4,19 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="/style/index.css">
+    <script src="script/newTodo.js" charset="utf-8"></script>
   </head>
   <body>
     <h1>write your todo</h1>
     <form action="SubmitTodo" method="post">
       <label>Title : </label><input type="text" name="userName" value=""><br><br>
       <label>Description:</label><textarea type="text" name="discription"></textarea><br>
-      <div id="items">
-        1: <input type="text" name="1" value=""><br>
-        2: <input type="text" name="1" value=""><br>
-        3: <input type="text" name="1" value=""><br>
-        4: <input type="text" name="1" value=""><br>
-        5: <input type="text" name="1" value=""><br>
-        6: <input type="text" name="1" value=""><br>
+      <div id="item">
+        <button type="button" name="button" onclick="getNewItemBox()">Add Item</button>
       </div>
-      <button type="submit" name="button">Submit</button>
+      <button type="submit" name="button">Save</button>
     </form>
-    <a href="userHome.html">Go To Home</a><br><br>
+    <a href="home">Go To Home</a><br><br>
     <a href="logout">Logout</a>
   </body>
 </html>
