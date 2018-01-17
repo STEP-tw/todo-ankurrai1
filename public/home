@@ -3,11 +3,9 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/style/index.css">
-    <script src="./src/dataRander.js" charset="utf-8"></script>
-    <script src="./src/data.js" charset="utf-8"></script>
     <title></title>
   </head>
-  <body onload="displayTodos()">
+  <body>
     <h1>User Home</h1>
     <h3>Welcome user</h3>
     <table>

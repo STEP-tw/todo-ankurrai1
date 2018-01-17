@@ -13,9 +13,9 @@
   <form action="SubmitTodo" method="post">
     <label>Title : </label><input type="text" name="userName" value=""><br><br>
     <label>Description:</label><textarea type="text" name="discription"></textarea><br>
-    <div id="item">
+      <ol id="items" ></ol>
+      Item : <input type="text" id="item" value="">
       <button type="button" name="button" onclick="getNewItemBox()">Add Item</button>
-    </div>
     <button type="submit" name="button">Save</button>
   </form>
   <a href="home">Go To Home</a><br><br>

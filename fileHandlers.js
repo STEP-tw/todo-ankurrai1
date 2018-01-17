@@ -115,6 +115,10 @@ const logoutUser = function(req, resp) {
 };
 
 const handleNewTodo=function (req,resp) {
+  if (!req.cookies.sessionid){
+    redirectInvalidUser(resp)
+    return;
+  }
   let fileContent=fs.readFileSync('./public/newTodo','utf8');
   resp.serve(fileContent)
 };
