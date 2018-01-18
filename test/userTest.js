@@ -1,6 +1,6 @@
 let chai = require('chai');
 let assert = chai.assert;
-const Users = require('../models/users.js');
+const Users = require('../models/user.js');
 
 let validUsers = [{
   userName: 'ankurrai',

@@ -1,11 +1,11 @@
 const Item = require('./item.js');
 
 class Todo{
-  constructor(id,title,description,items){
+  constructor(id,title,description){
     this.id=id;
     this.title = title;
     this.description = description||'';
-    this.items = items||[];
+    this.items =[];
     this.counter=0;
   }
 
@@ -26,6 +26,7 @@ class Todo{
   }
 
   addItem(text,status) {
+    status=status||false;
     this.counter++;
     this.items.push(new Item(this.counter,text,status));
   }

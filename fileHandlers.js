@@ -1,4 +1,5 @@
 const fs = require('fs');
+const User = require('./models/user.js');
 
 let validUsers = [{
     userName: 'ankurrai',
@@ -27,12 +28,31 @@ const getContentType = function(filePath) {
   return headers[fileExt];
 };
 
+const getUsersTodos = function() {
+  let content;
+  try {
+    content = fs.readFileSync('./data/data.json', 'utf8');
+  } catch (e) {
+    return;
+  }
+  let data = JSON.parse(content)
+  return data;
+}
+
 const getAllTodo = function(userName) {
-  let content = fs.readFileSync('./data/data.json', 'utf8');
-  let users = JSON.parse(content);
+  let users = getUsersTodos();
   let todos = users[userName] || {};
   return todos;
 };
+
+const storeTodos = function(userName, content) {
+  let todos=getUsersTodos();
+  todos[userName]=content;
+  let data = JSON.stringify(todos, null, 1);
+  fs.writeFile('./data/data.json', data, (err) => {
+    if (err) console.log(`storage path ${filePath} not valid`);
+  });
+}
 
 const validateUser = function(req, resp) {
   if (!req.cookies.sessionid)
@@ -65,7 +85,6 @@ const hasAskedForToDo = (req) => {
 const serveTodo = function(req, title) {
   let userName = req.cookies[' user'] || '';
   let todos = getAllTodo(userName);
-  console.log(todos);
   let todo = todos[title];
   resp.serve(todo);
 };
@@ -118,15 +137,22 @@ const handleNewTodo = function(req, resp) {
 
 const storeNewTodo = function(req, resp) {
   validateUser(req, resp);
-  console.log(req.body);
+  let userName = req.cookies[' user'] || '';
+  let userTodos = getAllTodo(userName);
+  todoDetails = req.body
+  let user = new User(userTodos);
+  user.addNewTodo(todoDetails);
+  let UserTodos = user.getUserTodos();
+  storeTodos(userName, UserTodos);
+  resp.redirect('home');
 };
 
 const respondWithTodo = function(req, resp) {
   let userName = req.cookies[' user'] || '';
   let todoId = req.cookies[' todoId'] || '';
   let todos = getAllTodo(userName);
-  let todo =todos.find((todo)=>todo.id==todoId);
-  todo=JSON.stringify(todo);
+  let todo = todos.find((todo) => todo.id == todoId);
+  todo = JSON.stringify(todo);
   resp.serve(todo);
 };
 
