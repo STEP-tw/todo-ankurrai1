@@ -12,6 +12,8 @@ let validUsers = [{
 
 let session = {};
 
+//-------------------------------helpers------------------------------------//
+
 const getContentType = function(filePath) {
   let fileExt = filePath.split(".").slice(-1)[0];
   let headers = {
@@ -28,32 +30,50 @@ const getContentType = function(filePath) {
 const getAllTodo = function(userName) {
   let content = fs.readFileSync('./data/data.json', 'utf8');
   let users = JSON.parse(content);
-  let todos = users[userName]||{};
+  let todos = users[userName] || {};
   return todos;
 };
 
-const getTitlesAsHtml = function(todos) {
-  let titles = Object.keys(todos);
-  let titlesAsHtml=titles.map((title)=>{
-    return `<ul><a href='/getClickedToDo${title}'>${title}</a></ul>`
+const validateUser = function(req, resp) {
+  if (!req.cookies.sessionid)
+    redirectInvalidUser(resp)
+};
+
+const redirectInvalidUser = function(resp) {
+  resp.setHeader('Set-Cookie', `message=login failed; Max-Age=5`);
+  resp.redirect('login');
+};
+
+const setCookie = function(resp, user) {
+  let sessionid = new Date().getTime();
+  user.sessionid = sessionid;
+  resp.setHeader('Set-Cookie', [`sessionid=${sessionid}`, `user=${user.userName}`]);
+};
+
+const getValidUser = function(req) {
+  let userName = req.body.userName;
+  let password = req.body.password;
+  return validUsers.find(ValidUser => {
+    return ValidUser.userName == userName && ValidUser.password == password;
   });
-  console.log(titlesAsHtml);
-  return titlesAsHtml.join('<br>');
 };
 
-const getAllTodoInHtml = function(userName) {
+const hasAskedForToDo = (req) => {
+  return req.method == 'GET' && req.url.startsWith('/todo_');
+}
+
+const serveTodo = function(req, title) {
+  let userName = req.cookies[' user'] || '';
   let todos = getAllTodo(userName);
-  let titles = getTitlesAsHtml(todos);
-  return titles;
+  console.log(todos);
+  let todo = todos[title];
+  resp.serve(todo);
 };
 
-const getHome = function(req, resp) {
-  let data = fs.readFileSync('./public/index.html', 'utf8');
-  resp.serve(data);
-};
+//-----------------------------handlers----------------------------------//
 
 const serveLanding = function(req, resp) {
-  let data = fs.readFileSync('./public/login', 'utf8');
+  let data = fs.readFileSync('./public/login.html', 'utf8');
   data = data.replace('loginFailedMessage', req.cookies.message || '');
   resp.setHeader('Content-Type', 'text/html');
   resp.serve(data);
@@ -69,35 +89,11 @@ const serveRegularFile = function(req, resp) {
 };
 
 const serveHomePage = function(req, resp) {
-  if (!req.cookies.sessionid){
-    redirectInvalidUser(resp)
-    return;
-  }
-  let data = fs.readFileSync(`./public/home`, 'utf8')
+  let data = fs.readFileSync(`./public/home.html`, 'utf8')
   let userName = req.cookies[' user'] || '';
   data = data.replace('user', userName);
-  data = data.replace('placeHolder', getAllTodoInHtml(userName) || '');
   resp.serve(data);
 };
-
-const redirectInvalidUser = function(resp) {
-  resp.setHeader('Set-Cookie', `message=login failed; Max-Age=5`);
-  resp.redirect('login');
-}
-
-const getValidUser = function(req) {
-  let userName = req.body.userName;
-  let password = req.body.password;
-  return validUsers.find(ValidUser => {
-    return ValidUser.userName == userName && ValidUser.password == password;
-  });
-};
-
-const setCookie = function(resp, user) {
-  let sessionid = new Date().getTime();
-  user.sessionid = sessionid;
-  resp.setHeader('Set-Cookie', [`sessionid=${sessionid}`, `user=${user.userName}`]);
-}
 
 const handleLogin = function(req, resp) {
   let user = getValidUser(req);
@@ -114,19 +110,57 @@ const logoutUser = function(req, resp) {
   resp.redirect('login');
 };
 
-const handleNewTodo=function (req,resp) {
-  if (!req.cookies.sessionid){
-    redirectInvalidUser(resp)
-    return;
-  }
-  let fileContent=fs.readFileSync('./public/newTodo','utf8');
+const handleNewTodo = function(req, resp) {
+  validateUser(req, resp)
+  let fileContent = fs.readFileSync('./public/newTodo.html', 'utf8');
   resp.serve(fileContent)
 };
 
-exports.handleNewTodo=handleNewTodo;
-exports.serveHomePage = serveHomePage;
-exports.logoutUser = logoutUser;
-exports.serveLanding = serveLanding;
-exports.handleLogin = handleLogin;
-exports.getHome = getHome;
-exports.serveRegularFile = serveRegularFile;
+const storeNewTodo = function(req, resp) {
+  validateUser(req, resp);
+  console.log(req.body);
+};
+
+const respondWithTodo = function(req, resp) {
+  let userName = req.cookies[' user'] || '';
+  let todoId = req.cookies[' todoId'] || '';
+  let todos = getAllTodo(userName);
+  let todo =todos.find((todo)=>todo.id==todoId);
+  todo=JSON.stringify(todo);
+  resp.serve(todo);
+};
+
+const respondWithTodos = function(req, resp) {
+  let userName = req.cookies[' user'] || '';
+  let todos = getAllTodo(userName);
+  let todoAsString = JSON.stringify(todos);
+  resp.serve(todoAsString);
+};
+
+const setTitle = function(req, resp) {
+  let requstUrl = req.url
+  if (hasAskedForToDo(req)) {
+    let todoId = requstUrl.substr(requstUrl.lastIndexOf("_") + 1);
+    resp.setHeader('Set-Cookie', `todoId=${todoId}; Max-Age=10`);
+    resp.redirect('todoToEdit');
+  }
+};
+
+const respondEditPage = function(req, resp) {
+  let todoEditPage = fs.readFileSync('./public/editTodo.html', 'utf8');
+  resp.serve(todoEditPage)
+};
+
+module.exports = {
+  handleNewTodo,
+  serveHomePage,
+  logoutUser,
+  serveLanding,
+  handleLogin,
+  serveRegularFile,
+  storeNewTodo,
+  setTitle,
+  respondEditPage,
+  respondWithTodos,
+  respondWithTodo,
+}

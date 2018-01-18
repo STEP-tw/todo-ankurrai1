@@ -12,7 +12,7 @@ let validUsers = [{
 
 let users={};
 
-describe('Users', () => {
+describe.skip('Users', () => {
 
   beforeEach(() => {
     users = new Users('./data/data.json',validUsers);

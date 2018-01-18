@@ -1,58 +1,63 @@
 const Item = require('./item.js');
 
-const SingleTodo = function(title, description = "") {
-  this.title = title;
-  this.description = description;
-  this.items = {};
-  this.counter = 0;
-};
+class Todo{
+  constructor(id,title,description,items){
+    this.id=id;
+    this.title = title;
+    this.description = description||'';
+    this.items = items||[];
+    this.counter=0;
+  }
 
-SingleTodo.prototype = {
-
-  addItem: function(text) {
-    this.items[++this.counter] = new Item(text);
-  },
-
-  editAItem:function (counter,text) {
-    this.items[counter].changeText(text);
-  },
-
-  getItemStatus:function (counter) {
-    this.items[counter].isItemDone();
-  },
-
-  markItemAsDone:function (counter) {
-    this.items[counter].markAsDone();
-  },
-
-  deleteAItem: function(counter) {
-    delete this.items[counter];
-  },
-
-  getAllItem: function() {
-    return this.items;
-  },
-
-  getAItem:function (counter) {
-    return this.items[counter];
-  },
-
-  retitle: function(newTitle) {
+  retitle(newTitle) {
     this.title = newTitle;
-  },
+  }
 
-  getTitle: function() {
+  getTitle() {
     return this.title;
-  },
+  }
 
-  getDiscription:function () {
+  getDescription() {
     return this.description;
-  },
+  }
 
-  editDescription: function(newDescription) {
+  editDescription(newDescription) {
     this.description = newDescription;
   }
 
-};
+  addItem(text,status) {
+    this.counter++;
+    this.items.push(new Item(this.counter,text,status));
+  }
 
-module.exports = SingleTodo;
+  editAItem(id,text) {
+    let item=this.items.find((item)=>item.id==id)
+    item.changeText(text);
+  }
+
+  getItemStatus(id) {
+    let item=this.items.find((item)=>item.id==id)
+    item.isItemDone();
+  }
+
+  markItemAsDone(id) {
+    let item=this.items.find((item)=>item.id==id)
+    item.markAsDone();
+  }
+
+  markItemAsUndone(id) {
+    let item=this.items.find((item)=>item.id==id)
+    item.markAsNotDone();
+  }
+
+  deleteAItem(id) {
+    let itemIndex=this.items.findIndex((item)=>item.id==id)
+    this.items.splice(itemIndex,1);
+  }
+
+  getAllItem() {
+    return this.items;
+  }
+
+}
+module.exports=Todo;

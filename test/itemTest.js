@@ -18,14 +18,15 @@ describe('Item', () => {
     assert.equal(item.text, "hello");
   });
 
-  it('should give text of item', () => {
-    let actual = item.getText();
-    assert.equal(actual, 'this is a text');
-  });
-
   it('should mark item as done', () => {
     let actual = item.markAsDone();
     assert.isOk(item.isItemDone());
+  });
+
+  it('should give false for item status', () => {
+    item.markAsDone();
+    item.markAsNotDone();
+    assert.isNotOk(item.isItemDone());
   });
 
 })

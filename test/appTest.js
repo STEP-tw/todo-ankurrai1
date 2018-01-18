@@ -35,7 +35,7 @@ describe('app', () => {
     it('gives the index page', done => {
       request(app, {
         method: 'GET',
-        url: '/index.html'
+        url: '/login'
       }, res => {
         th.status_is_ok(res);
         th.content_type_is(res, 'text/html');
@@ -66,7 +66,7 @@ describe('app', () => {
       }, res => {
         th.status_is_ok(res);
         th.content_type_is(res, 'text/js');
-        th.body_contains(res, 'displayTodo');
+        th.body_contains(res, 'getAllTodo');
         done();
       })
     })
@@ -75,7 +75,7 @@ describe('app', () => {
     it('serves the login page', done => {
       request(app, {
         method: 'GET',
-        url: '/loginPage.html'
+        url: '/login'
       }, res => {
         th.status_is_ok(res);
         th.body_contains(res, 'Name :');
@@ -92,7 +92,7 @@ describe('app', () => {
           body: 'userName=ankurrai&password=ankur'
         },
         res => {
-          th.should_be_redirected_to(res, 'userHome.html');
+          th.should_be_redirected_to(res, 'home');
           th.should_not_have_cookie(res, 'message');
           done();
         })
@@ -104,7 +104,7 @@ describe('app', () => {
         url: '/login',
         body: 'username=badUser'
       }, res => {
-        th.should_be_redirected_to(res, 'loginPage.html');
+        th.should_be_redirected_to(res, 'login');
         th.should_have_expiring_cookie(res, 'message', 'login failed');
         done();
       })

@@ -1,24 +1,20 @@
-const Item = function(text) {
-  this.text = text;
-  this.isDone = false;
-}
-
-Item.prototype ={
-  markAsDone:function(){
-    this.isDone = true;
-  },
-
-  isItemDone:function(){
-    return this.isDone;
-  },
-
-  getText:function(){
-    return this.text;
-  },
-
-  changeText:function(newText){
+class Item {
+  constructor(id,text,status) {
+    this.id=id
+    this.text = text;
+    this.done = status||false;
+  }
+  markAsDone(){
+    this.done = true;
+  }
+  isItemDone(){
+    return this.done;
+  }
+  changeText(newText){
     this.text = newText;
-  },
+  }
+  markAsNotDone() {
+    this.done = false;
+  }
 }
-
 module.exports = Item;

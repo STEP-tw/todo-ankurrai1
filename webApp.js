@@ -44,7 +44,6 @@ const respondWithError = function() {
 
 const eventHandler = function(req, resp) {
   req.cookies = qs.parse(req.headers.cookie||'',";");
-  console.log(req.cookies);
   let content = "";
   req.on('data', data => content += data.toString());
   req.on('end', () => {
