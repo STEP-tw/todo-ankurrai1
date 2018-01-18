@@ -35,4 +35,15 @@ describe('Users', () => {
     let items = todo.getAllItem();
     assert.deepEqual(items, []);
   });
+  it('should give user\'s  all todo', () => {
+    let actual = user.getUserTodos();
+    let expected = [{
+      id: 1,
+      title: 'my Todo',
+      description: 'something',
+      items: [],
+      counter: 0
+    }]
+    assert.deepEqual(actual, expected);
+  });
 })

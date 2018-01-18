@@ -97,7 +97,6 @@ describe('app', () => {
           done();
         })
     })
-
     it('redirects to login.html with message for invalid user', done => {
       request(app, {
         method: 'POST',
