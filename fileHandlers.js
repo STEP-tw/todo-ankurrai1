@@ -27,9 +27,9 @@ const getContentType = function(filePath) {
   };
   return headers[fileExt];
 };
+let content;
 
 const getUsersTodos = function() {
-  let content;
   try {
     content = fs.readFileSync('./data/data.json', 'utf8');
   } catch (e) {
@@ -139,6 +139,7 @@ const storeNewTodo = function(req, resp) {
   validateUser(req, resp);
   let userName = req.cookies[' user'] || '';
   let userTodos = getAllTodo(userName);
+  console.log(req.body);
   todoDetails = req.body
   let user = new User(userTodos);
   user.addNewTodo(todoDetails);
@@ -178,15 +179,15 @@ const respondEditPage = function(req, resp) {
 };
 
 module.exports = {
-  handleNewTodo,
+  serveLanding,
   serveHomePage,
   logoutUser,
-  serveLanding,
-  handleLogin,
-  serveRegularFile,
-  storeNewTodo,
-  setTitle,
-  respondEditPage,
   respondWithTodos,
   respondWithTodo,
+  respondEditPage,
+  handleNewTodo,
+  handleLogin,
+  storeNewTodo,
+  serveRegularFile,
+  setTitle,
 }

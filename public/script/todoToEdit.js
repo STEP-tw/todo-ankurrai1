@@ -1,13 +1,11 @@
 const getTodoAsHtml =function (todo) {
   let counter=0;
   let todoElements=[];
-  todoElements.push(`Title : <input type="text" name="" value="${todo.title}"><br>`);
-  todoElements.push(`Description : <textarea type="text">${todo.description}</textarea><br>`);
-
-  todo.item.forEach((item)=>{
-    counter++;
-    todoElements.push(`${counter}: <input type="text" name="" value="${item.text}"><br>`);
-  })
+  todoElements.push(`<h4>Title :${todo.title}<h4>`);
+  todoElements.push(`<h3>Description :${todo.description}<h3>`);
+  todo.items.forEach((item)=>{
+    todoElements.push(`<h5>${++counter} : ${item.text}<h5>`);
+  });
   return todoElements.join("<br>");
 };
 

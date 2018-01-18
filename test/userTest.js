@@ -1,68 +1,38 @@
 let chai = require('chai');
 let assert = chai.assert;
-const Users = require('../models/user.js');
+const User = require('../models/user.js');
 
-let validUsers = [{
-  userName: 'ankurrai',
-  password: 'ankur'
-}, {
-  userName: 'yogi',
-  password: 'yogi'
-}];
+let user = {};
 
-let users={};
+describe('Users', () => {
 
-describe.skip('Users', () => {
+  let userTodo = {
+    Title: 'my Todo',
+    description: 'something',
+    item: []
+  };
 
   beforeEach(() => {
-    users = new Users('./data/data.json',validUsers);
+    user = new User([]);
+    user.addNewTodo(userTodo);
   });
 
-  it('should return given users todo', () => {
-    let actual = users.getUserAllTodo("ankur");
-    let expected = {
-      "hello": {title: "hello",description: "a description",item: {1: {text: "i am a line",
-            isDone: false
-          },
-          counter: 0
-        }
-      }
-    }
-    assert.deepEqual(actual, expected);
+  it('should give title of user\'s todo ', () => {
+    let todo = user.userTodos[0];
+    console.log();
+    let title = todo.getTitle();
+    assert.equal(title, 'my Todo');
   });
 
-  it('should give a Todo By Title', () => {
-    let actual = users.getTodoByTitle("ankur", "hello");
-    let expected = {
-      title: "hello",
-      description: "a description",
-      item: {
-        1: {
-          text: "i am a line",
-          isDone: false
-        },
-        counter: 0
-      }
-    }
-    assert.deepEqual(actual, expected);
+  it('should give description of user\'s todo', () => {
+    let todo = user.userTodos[0];
+    let description = todo.getDescription();
+    assert.equal(description, 'something');
   });
 
-  it('should delete Todo By Title', () => {
-    let actual = users.deleteTodoByTitle("ankur", "hello");
-    let expected = users.addNewTodo["ankur"]
-    assert.equal(actual, expected);
+  it('should give items', () => {
+    let todo = user.userTodos[0];
+    let items = todo.getAllItem();
+    assert.deepEqual(items, []);
   });
-
-  it('should add Todo with Title ', () => {
-    users.addNewTodo("ankur", "hii", "new One description");
-    let actual = users.getTodoByTitle("ankur", "hii");
-    let expected = {
-      title: 'hii',
-      description: 'new One description',
-      items: {},
-      counter: 0
-    }
-    assert.deepOwnInclude(actual, expected);
-  });
-
 })

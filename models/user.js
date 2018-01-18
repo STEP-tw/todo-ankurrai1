@@ -1,12 +1,12 @@
 const Todo = require('./todo.js');
 
 
-let Users = function(userTodos) {
+let User = function(userTodos) {
   this.userTodos = userTodos;
   this.counter = 0;
 };
 
-Users.prototype = {
+User.prototype = {
 
   addNewTodo: function(todoDetails) {
     let title=todoDetails.Title;
@@ -24,4 +24,4 @@ Users.prototype = {
   }
 }
 
-module.exports = Users;
+module.exports = User;
