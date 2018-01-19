@@ -4,6 +4,15 @@ let request = require('./requestSimulator.js');
 process.env.COMMENT_STORE = "./testStore.json";
 let app = require('../app.js');
 let th = require('./testHelper.js');
+let validUsers = [{
+    userName: 'ankurrai',
+    password: 'ankur'
+  },
+  {
+    userName: 'yogi',
+    password: 'yogi'
+  }
+];
 
 describe('app', () => {
   describe('GET /bad', () => {
