@@ -12,7 +12,8 @@ const urlIsOneOf = function(urls) {
 };
 
 const runProcessors = function(processors, req, resp) {
-  if (processors.length==0) return;
+  debugger;
+  if (processors.length == 0) return;
   processors.forEach((process)=>{
     if (resp.finished) return;
     process(req,resp);

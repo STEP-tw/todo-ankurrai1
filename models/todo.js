@@ -26,6 +26,7 @@ class Todo{
   }
 
   addItem(text,status) {
+    debugger;
     status=status||false;
     this.counter++;
     this.items.push(new Item(this.counter,text,status));

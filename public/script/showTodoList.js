@@ -1,4 +1,4 @@
-let reqListener = function() {
+let showTodoList = function() {
   let todos = JSON.parse(this.responseText);
   let todoDiv = document.getElementById('todos');
   todos.forEach((todo)=>{
@@ -12,7 +12,7 @@ let reqListener = function() {
 
 const getAllTodo = function(){
   var oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", reqListener);
+  oReq.addEventListener("load", showTodoList);
   oReq.open("GET", `userTodos`);
   oReq.send();
 }

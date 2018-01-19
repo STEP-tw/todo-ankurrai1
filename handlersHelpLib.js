@@ -36,14 +36,15 @@ const getUsersTodos = function() {
 
 const getAllTodo = function(userName) {
   let users = getUsersTodos();
-  let todos = users[userName] || {};
+  let user = users[userName];
+  let todos =  user || [];
   return todos;
 };
 
-const storeTodos = function(userName, content) {
-  let todos=getUsersTodos();
-  todos[userName]=content;
-  let data = JSON.stringify(todos, null, 1);
+const storeTodos = function(userName, todoList) {
+  let users=getUsersTodos();
+  users[userName]=todoList;
+  let data = JSON.stringify(users, null, 1);
   fs.writeFile('./data/data.json', data, (err) => {
     if (err) console.log(`storage path ${filePath} not valid`);
   });

@@ -42,11 +42,12 @@ const logoutUser = function(req, resp) {
 
 const handleNewTodo = function(req, resp) {
   lib.validateUser(req, resp)
-  let fileContent = fs.readFileSync('./public/newTodo.html', 'utf8');
+  let fileContent = fs.readFileSync('./public/addTodo.html', 'utf8');
   resp.serve(fileContent)
 };
 
 const storeNewTodo = function(req, resp) {
+  debugger;
   lib.validateUser(req, resp);
   let userName = req.cookies[' user'] || '';
   let userTodos = lib.getAllTodo(userName);
@@ -85,7 +86,7 @@ const setTitle = function(req, resp) {
 };
 
 const respondEditPage = function(req, resp) {
-  let todoEditPage = fs.readFileSync('./public/editTodo.html', 'utf8');
+  let todoEditPage = fs.readFileSync('./public/todo.html', 'utf8');
   resp.serve(todoEditPage)
 };
 

@@ -58,11 +58,11 @@ describe('app', () => {
     })
   })
 
-  describe('GET /script/dataRender.js', () => {
+  describe('GET /script/showTodoList.js', () => {
     it('serves the javascript source', done => {
       request(app, {
         method: 'GET',
-        url: '/script/dataRender.js'
+        url: '/script/showTodoList.js'
       }, res => {
         th.status_is_ok(res);
         th.content_type_is(res, 'text/js');

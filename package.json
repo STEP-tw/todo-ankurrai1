@@ -2,7 +2,7 @@
   "name": "todo-ankurrai1",
   "version": "1.0.0",
   "description": "## Objective",
-  "main": "fileHandlers.js",
+  "main": "server.js",
   "directories": {
     "test": "test"
   },
@@ -14,7 +14,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "start": "node server.js"
+    "start": "node server.js" 
   },
   "repository": {
     "type": "git",

@@ -9,7 +9,7 @@ const getTodoAsHtml =function (todo) {
   return todoElements.join("<br>");
 };
 
-let reqListener = function(){
+let showTodo = function(){
   let todoData = JSON.parse(this.responseText);
   let div = document.getElementById('form');
   div.innerHTML=getTodoAsHtml(todoData)
@@ -18,7 +18,7 @@ let reqListener = function(){
 let viewTodo = function(){
   console.log();
   var oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", reqListener);
+  oReq.addEventListener("load", showTodo);
   oReq.open("GET", 'userTodo');
   oReq.send();
 }
