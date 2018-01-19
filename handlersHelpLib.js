@@ -1,14 +1,5 @@
 const fs = require('fs');
-let validUsers = [{
-    userName: 'ankurrai',
-    password: 'ankur'
-  },
-  {
-    userName: 'yogi',
-    password: 'yogi'
-  }
-];
-
+const validUsers = require('./data/validUsers.js').validUsers;
 const getContentType = function(filePath) {
   let fileExt = filePath.split(".").slice(-1)[0];
   let headers = {

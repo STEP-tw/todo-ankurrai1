@@ -1,9 +1,6 @@
 const logAndStoreRequest = require('./log.js').logAndStoreRequest;
-
 const create= require('./webApp.js').create;
-
 const handlersLib=require('./fileHandlers.js');
-
 const app = create();
 
 app.preProcessUse(logAndStoreRequest);
