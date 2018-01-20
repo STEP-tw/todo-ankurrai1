@@ -7,8 +7,10 @@ describe('class Counter',function () {
     counter = new Counter;
     counter2 = new Counter(1,2);
   })
-  it('creates an instanceof itself',function () {
-    assert.isTrue(counter instanceof Counter);
+  it('should have an initial value',function () {
+    assert.propertyVal(counter2,'initialValue',1);
+    assert.propertyVal(counter2,'count',1);
+    assert.propertyVal(counter,'addend',1);
   })
   describe('increment',function () {
     it('increments itself by 1',function () {

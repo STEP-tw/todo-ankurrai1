@@ -1,6 +1,5 @@
 const fs = require('fs');
 const validUsers = require('./data/validUsers.js').validUsers;
-
 const fromJSON = function (str) {
   return JSON.parse(str);
 };
