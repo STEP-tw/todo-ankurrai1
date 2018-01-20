@@ -19,18 +19,14 @@ describe('User',function () {
     assert.deepPropertyVal(user,'todoList',[]);
   })
 
-  describe('addTodoList',function () {
-    it('should add a list',function () {
-      let repo = [{todo: "1"},{todo: "2"}];
-      user.addTodoList(repo);
-      assert.deepEqual(user.todoList,repo);
-    })
+  it('should contain a list of deleted todos',function () {
+    assert.deepPropertyVal(user,'deletedTodos',[]);
   })
 
   describe('emptyList',function () {
     it('should clear list',function () {
-      let repo = [{todo: "1"},{todo: "2"}];
-      user.addTodoList(repo);
+      let todo= {todo: "1"};
+      user.addTodo(todo);
       user.emptyList();
       assert.deepEqual(user.todoList,[]);
     })
@@ -45,11 +41,28 @@ describe('User',function () {
   })
 
   describe('fetchTodo',function () {
-    it('should be able to fetch a asked todo',function () {
+    it('should be able to fetch a todo',function () {
       let todo = {id: 1,hi: 'hello'};
       user.addTodo(todo);
       let actual = user.fetchTodo(1);
       assert.deepEqual(actual,todo);
+    })
+  })
+
+  describe('deleteTodo',function () {
+    var todo;
+    beforeEach(function () {
+      todo = {id: 1,hi: 'hello'};
+      user.addTodo(todo);
+      user.deleteTodo(1);
+    })
+    it('should be able to delete a todo',function () {
+      assert.deepEqual(user.todoList,[]);
+    })
+
+    it('should add the deleted todo in deletedTodo list',function () {
+      console.log(user);
+      assert.deepInclude(user.deletedTodos,todo);
     })
   })
 })

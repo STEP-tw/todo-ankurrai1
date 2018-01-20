@@ -3,10 +3,7 @@ class User {
     this.name = name;
     this.id = id;
     this.todoList = todoList || [];
-  }
-
-  addTodoList(repo) {
-    return this.todoList = repo;
+    this.deletedTodos = [];
   }
 
   emptyList(repo) {
@@ -19,6 +16,13 @@ class User {
 
   fetchTodo(todoId) {
     return this.todoList.find(todo => todo.id == todoId);
+  }
+
+  deleteTodo(todoId) {
+    let todoIndex=this.todoList.findIndex((todo)=>todo.id==todoId);
+    let todo = this.todoList[todoIndex];
+    this.deletedTodos.push(todo);
+    this.todoList.splice(todoIndex,1);
   }
 }
 module.exports = User;
