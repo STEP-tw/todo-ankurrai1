@@ -16,5 +16,9 @@ class User {
   addTodo(todo) {
     return this.todoList.push(todo);
   }
+
+  fetchTodo(todoId) {
+    return this.todoList.find(todo => todo.id == todoId);
+  }
 }
 module.exports = User;

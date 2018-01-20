@@ -43,4 +43,13 @@ describe('User',function () {
       assert.include(user.todoList,todo);
     })
   })
+
+  describe('fetchTodo',function () {
+    it('should be able to fetch a asked todo',function () {
+      let todo = {id: 1,hi: 'hello'};
+      user.addTodo(todo);
+      let actual = user.fetchTodo(1);
+      assert.deepEqual(actual,todo);
+    })
+  })
 })
