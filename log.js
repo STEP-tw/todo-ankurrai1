@@ -7,7 +7,7 @@ const timeStamp = () => {
 
 const toString=(o)=>JSON.stringify(o,null,2);
 
-const logAndStoreRequest = (req, resp) => {
+const logAndStoreRequest = (req, res) => {
   console.log(`${req.method} ${req.url}`);
   let text = ['------------------------------',
     `${timeStamp()}`,

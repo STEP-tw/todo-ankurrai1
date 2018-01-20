@@ -1,4 +1,5 @@
 let showTodoList = function() {
+  console.log(this.responseText);
   let todos = JSON.parse(this.responseText);
   let todoDiv = document.getElementById('todos');
   todos.forEach((todo)=>{

@@ -5,15 +5,16 @@ const app = create();
 
 app.preProcessUse(logAndStoreRequest);
 app.preProcessUse(handlersLib.setTitle);
+app.preProcessUse(handlersLib.handleTresspassing);
 
 app.get("/",handlersLib.serveLanding);
 app.get("/login",handlersLib.serveLanding);
 app.get("/home",handlersLib.serveHomePage);
 app.get("/logout",handlersLib.logoutUser);
 
-app.get('/userTodos',handlersLib.respondWithTodos)
-app.get('/userTodo',handlersLib.respondWithTodo)
-app.get('/todoToEdit',handlersLib.respondEditPage);
+app.get('/userTodos',handlersLib.resondWithTodos)
+app.get('/userTodo',handlersLib.resondWithTodo)
+app.get('/todoToEdit',handlersLib.resondEditPage);
 
 app.get('/newTodo',handlersLib.handleNewTodo);
 

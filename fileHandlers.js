@@ -7,54 +7,64 @@ function getCookie(req,cookieName) {
 }
 
 //-----------------------------handlers---------------------------------//
-const serveLanding = function(req, resp) {
+const serveLanding = function(req, res) {
   debugger;
   if (getCookie(req,'user')) {
-    resp.redirect('home');
+    res.redirect('home');
   } else {
     let data = lib.getFileContents('./public/login.html');
     data = data.replace('loginFailedMessage', getCookie(req,'message') || '');
-    resp.setHeader('Content-Type', 'text/html');
-    resp.serve(data);
+    res.setHeader('Content-Type', 'text/html');
+    res.serve(data);
   }
 }
 
-const serveRegularFile = function(req, resp) {
+const handleTresspassing = function (req,res) {
+  let userName=getCookie(req,'user');
+  let validUrls=['/login','/style/index.css','/image/todo.jpg','/'];
+  debugger;
+  if (!userName && !req.urlIsOneOf(validUrls) && req.fileExists(fs)) {
+    res.setHeader('Set-Cookie', 'message=Kindly login for more access; Max-Age=5');
+    res.redirect('login');
+  }
+};
+
+const serveRegularFile = function(req, res) {
   let filePath = req.url;
   fs.readFile(`./public${filePath}`, (error, data) => {
-    if (error) return resp.respondWithError();
-    resp.setHeader('Content-Type', lib.getContentType(filePath))
-    resp.serve(data);
+    if (error) return res.resondWithError();
+    res.setHeader('Content-Type', lib.getContentType(filePath))
+    res.serve(data);
   });
 };
 
-const serveHomePage = function(req, resp) {
+const serveHomePage = function(req, res) {
   debugger;
   let data = lib.getFileContents(`./public/home.html`);
   let userName = getCookie(req,'user') || '';
-  data = data.replace('Guest please login to explore our features', userName);
-  resp.serve(data);
+  data = data.replace('user', userName);
+  res.serve(data);
 };
 
-const handleLogin = function(req, resp) {
+const handleLogin = function(req, res) {
   let user = lib.getValidUser(req);
   if (!user)
-    return lib.redirectInvalidUser(resp);
-  lib.setCookie(resp,user);
-  resp.redirect('home');
+    return lib.redirectInvalidUser(res);
+  lib.setCookie(res,user);
+  res.redirect('home');
 };
 
-const logoutUser = function(req, resp) {
-  resp.setHeader('Set-Cookie', [`sessionid=0; Max-Age=0`, `user=''; Max-Age=0`]);
-  resp.redirect('login');
+const logoutUser = function(req, res) {
+  res.setHeader('Set-Cookie', [`sessionid=0; Max-Age=0`, `user=''; Max-Age=0`]);
+  res.redirect('login');
 };
 
-const handleNewTodo = function(req, resp) {
+const handleNewTodo = function(req, res) {
   let fileContent = lib.getFileContents('./public/addTodo.html');
-  resp.serve(fileContent)
+  res.serve(fileContent)
 };
 
-const storeNewTodo = function(req, resp) {
+const storeNewTodo = function(req, res) {
   debugger;
   let userName = getCookie(req,'user') || '';
   let userTodos = lib.getAllTodo(userName);
@@ -64,10 +74,10 @@ const storeNewTodo = function(req, resp) {
   user.addNewTodo(todoDetails);
   let UserTodos = user.getUserTodos();
   lib.storeTodos(userName, UserTodos);
-  resp.redirect('home');
+  res.redirect('home');
 };
 
-const respondWithTodo = function(req, resp) {
+const resondWithTodo = function(req, res) {
   debugger;
   let userName = getCookie(req,'user') || '';
   let todoId = req.cookies[' todoId'] || '';
@@ -75,40 +85,42 @@ const respondWithTodo = function(req, resp) {
   let todo = todos.find((todo) => todo.id == todoId);
   todo = JSON.stringify(todo);
   console.log(todo);
-  resp.serve(todo);
+  res.serve(todo);
 };
 
-const respondWithTodos = function(req, resp) {
+const resondWithTodos = function(req, res) {
   let userName = getCookie(req,'user') || '';
   let todos = lib.getAllTodo(userName);
   let todoAsString = JSON.stringify(todos);
-  resp.serve(todoAsString);
+  res.serve(todoAsString);
+  debugger;
 };
 
-const setTitle = function(req, resp) {
+const setTitle = function(req, res) {
   let requstUrl = req.url
   if (lib.hasAskedForToDo(req)) {
     let todoId = requstUrl.substr(requstUrl.lastIndexOf("_") + 1);
-    resp.setHeader('Set-Cookie', `todoId=${todoId}; Max-Age=10`);
-    resp.redirect('todoToEdit');
+    res.setHeader('Set-Cookie', `todoId=${todoId}; Max-Age=10`);
+    res.redirect('todoToEdit');
   }
 };
 
-const respondEditPage = function(req, resp) {
+const resondEditPage = function(req, res) {
   let todoEditPage = lib.getFileContents('./public/todo.html');
-  resp.serve(todoEditPage)
+  res.serve(todoEditPage)
 };
 
 module.exports = {
   serveLanding,
   serveHomePage,
   logoutUser,
-  respondWithTodos,
-  respondWithTodo,
-  respondEditPage,
+  resondWithTodos,
+  resondWithTodo,
+  resondEditPage,
   handleNewTodo,
   handleLogin,
   storeNewTodo,
   serveRegularFile,
   setTitle,
+  handleTresspassing
 }

@@ -33,6 +33,7 @@ const getAllTodo = function(userName) {
   let users = fromJSON(getFileContents('./data/data.json'));
   let user = users[userName];
   let todos =  user || [];
+  debugger;
   return todos;
 };
 
@@ -45,15 +46,15 @@ const storeTodos = function(userName, todoList) {
   });
 }
 
-const redirectInvalidUser = function(resp) {
-  resp.setHeader('Set-Cookie', `message=login failed; Max-Age=5`);
-  resp.redirect('login');
+const redirectInvalidUser = function(res) {
+  res.setHeader('Set-Cookie', `message=login failed; Max-Age=5`);
+  res.redirect('login');
 };
 
-const setCookie = function(resp, user) {
+const setCookie = function(res, user) {
   let sessionid = new Date().getTime();
   user.sessionid = sessionid;
-  resp.setHeader('Set-Cookie', [`sessionid=${sessionid}`, `user=${user.userName}`]);
+  res.setHeader('Set-Cookie', [`sessionid=${sessionid}`, `user=${user.userName}`]);
 };
 
 const getValidUser = function(req) {

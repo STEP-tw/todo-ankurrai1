@@ -2,35 +2,17 @@
  "ankurrai": [
   {
    "id": 1,
-   "title": "something",
-   "description": "adpfo8gypof",
-   "items": [
-    {
-     "id": 1,
-     "text": "gliuhdr",
-     "done": false
-    },
-    {
-     "id": 2,
-     "text": "svgkluhdf",
-     "done": false
-    }
-   ],
-   "counter": 2
-  },
-  {
-   "id": 1,
    "title": "hi",
    "description": "hello",
    "items": [
     {
      "id": 1,
-     "text": "df",
+     "text": "asdf",
      "done": false
     },
     {
      "id": 2,
-     "text": "fdf",
+     "text": "dsf",
      "done": false
     }
    ],
@@ -38,35 +20,17 @@
   },
   {
    "id": 1,
-   "title": "this may work",
-   "description": "possibly",
+   "title": "somthing",
+   "description": "a description",
    "items": [
     {
      "id": 1,
-     "text": "df",
+     "text": "first line",
      "done": false
     },
     {
      "id": 2,
-     "text": "sdf",
-     "done": false
-    }
-   ],
-   "counter": 2
-  },
-  {
-   "id": 1,
-   "title": "dsf",
-   "description": "dsfsfsdfsdfds",
-   "items": [
-    {
-     "id": 1,
-     "text": "sdf",
-     "done": false
-    },
-    {
-     "id": 2,
-     "text": "dff",
+     "text": "second line",
      "done": false
     }
    ],

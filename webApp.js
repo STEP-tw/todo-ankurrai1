@@ -1,22 +1,27 @@
 const qs=require('querystring');
 
-const AddBehaviour = function(req, resp) {
-  resp.redirect = redirect.bind(resp);
+const AddBehaviour = function(req, res) {
+  res.redirect = redirect.bind(res);
   req.urlIsOneOf = urlIsOneOf.bind(req);
-  resp.serve = serve.bind(resp);
-  resp.respondWithError = respondWithError.bind(resp);
+  req.fileExists = fileExists.bind(req);
+  res.serve = serve.bind(res);
+  res.resondWithError = resondWithError.bind(res);
 };
 
 const urlIsOneOf = function(urls) {
   return urls.includes(this.url);
 };
 
-const runProcessors = function(processors, req, resp) {
+const fileExists = function (fs) {
+  return fs.existsSync('./public' + this.url);
+};
+
+const runProcessors = function(processors, req, res) {
   debugger;
   if (processors.length == 0) return;
   processors.forEach((process)=>{
-    if (resp.finished) return;
-    process(req,resp);
+    if (res.finished) return;
+    process(req,res);
   })
 };
 
@@ -31,19 +36,19 @@ const redirect = function(newLocation) {
   this.end();
 };
 
-const invoke = function(req, resp) {
+const invoke = function(req, res) {
   let handler = this.handlers[req.method][req.url];
   if (!handler) return;
-  handler(req, resp);
+  handler(req, res);
 };
 
-const respondWithError = function() {
+const resondWithError = function() {
   this.statusCode = 404;
   this.write('File not found!');
   this.end();
 }
 
-const eventHandler = function(req, resp) {
+const eventHandler = function(req, res) {
   debugger;
   req.cookies = qs.parse(req.headers.cookie||'',";");
   let content = "";
@@ -52,11 +57,11 @@ const eventHandler = function(req, resp) {
     console.log(req.body);
     req.body = qs.parse(content);
     content = "";
-    runProcessors(this.preProcess,req,resp);
-    if(resp.finished) return;
-    invoke.call(this,req,resp);
-    if(resp.finished) return;
-    runProcessors(this.postProcess,req,resp);
+    runProcessors(this.preProcess,req,res);
+    if(res.finished) return;
+    invoke.call(this,req,res);
+    if(res.finished) return;
+    runProcessors(this.postProcess,req,res);
   });
 };
 
@@ -82,14 +87,14 @@ const postProcessUse=function (handler) {
   this.postProcess.push(handler);
 }
 
-const requestHandler = function(req, resp) {
-  AddBehaviour(req,resp);
-  eventHandler.call(this, req, resp);
+const requestHandler = function(req, res) {
+  AddBehaviour(req,res);
+  eventHandler.call(this, req, res);
 };
 
 exports.create = function() {
-  let requestlistener = function(req, resp) {
-    requestHandler.call(requestlistener, req, resp)
+  let requestlistener = function(req, res) {
+    requestHandler.call(requestlistener, req, res)
   };
   initialize.call(requestlistener);
   requestlistener.get = get;

@@ -7,7 +7,7 @@ let th = require('./testHelper.js');
 
 describe('app', () => {
   describe('GET /bad', () => {
-    it('responds with 404', done => {
+    it('resonds with 404', done => {
       request(app, {
         method: 'GET',
         url: '/bad'
@@ -32,7 +32,7 @@ describe('app', () => {
   })
 
   describe('GET /login.html', () => {
-    it('gives the login page to logged out user', done => {
+    it('should take logged out user to login page', done => {
       request(app, {
         method: 'GET',
         url: '/login'
@@ -70,10 +70,11 @@ describe('app', () => {
   })
 
   describe('GET /script/showTodoList.js', () => {
-    it('serves the javascript source', done => {
+    it('serves the list of todo page', done => {
       request(app, {
         method: 'GET',
-        url: '/script/showTodoList.js'
+        url: '/script/showTodoList.js',
+        headers: {cookie:"sessionid=1516430776870; user=ankurrai"}
       }, res => {
         th.status_is_ok(res);
         th.content_type_is(res, 'text/js');
@@ -98,15 +99,15 @@ describe('app', () => {
   describe('POST /login', () => {
     it('redirects to loginPage for valid user', done => {
       request(app, {
-          method: 'POST',
-          url: '/login',
-          body: 'userName=ankurrai&password=ankur'
-        },
-        res => {
-          th.should_be_redirected_to(res, 'home');
-          th.should_not_have_cookie(res, 'message');
-          done();
-        })
+        method: 'POST',
+        url: '/login',
+        body: 'userName=ankurrai&password=ankur'
+      },
+      res => {
+        th.should_be_redirected_to(res, 'home');
+        th.should_not_have_cookie(res, 'message');
+        done();
+      })
     })
     it('redirects to login.html with message for invalid user', done => {
       request(app, {
@@ -116,6 +117,19 @@ describe('app', () => {
       }, res => {
         th.should_be_redirected_to(res, 'login');
         th.should_have_expiring_cookie(res, 'message', 'login failed');
+        done();
+      })
+    })
+  })
+
+  describe('GET unpermitted files',function () {
+    it('should not allow unlogged user to access unpermitted files',done=>{
+      request(app, {
+        method: 'GET',
+        url: '/home.html',
+      }, res => {
+        th.should_be_redirected_to(res,'login');
+        // th.should_have_expiring_cookie(res, 'message', 'Kindly login for more access');
         done();
       })
     })
