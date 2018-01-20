@@ -2,13 +2,21 @@ const fs = require('fs');
 const User = require('./models/user.js');
 const lib = require('./handlersHelpLib.js');
 
-//-----------------------------handlers----------------------------------//
+function getCookie(req,cookieName) {
+  return req.cookies[`${cookieName}`] || req.cookies[` ${cookieName}`];
+}
 
+//-----------------------------handlers---------------------------------//
 const serveLanding = function(req, resp) {
-  let data = fs.readFileSync('./public/login.html', 'utf8');
-  data = data.replace('loginFailedMessage', req.cookies.message || '');
-  resp.setHeader('Content-Type', 'text/html');
-  resp.serve(data);
+  debugger;
+  if (getCookie(req,'user')) {
+    resp.redirect('home');
+  } else {
+    let data = lib.getFileContents('./public/login.html');
+    data = data.replace('loginFailedMessage', getCookie(req,'message') || '');
+    resp.setHeader('Content-Type', 'text/html');
+    resp.serve(data);
+  }
 }
 
 const serveRegularFile = function(req, resp) {
@@ -21,9 +29,10 @@ const serveRegularFile = function(req, resp) {
 };
 
 const serveHomePage = function(req, resp) {
-  let data = fs.readFileSync(`./public/home.html`, 'utf8')
-  let userName = req.cookies[' user'] || '';
-  data = data.replace('user', userName);
+  debugger;
+  let data = lib.getFileContents(`./public/home.html`);
+  let userName = getCookie(req,'user') || '';
+  data = data.replace('Guest please login to explore our features', userName);
   resp.serve(data);
 };
 
@@ -31,7 +40,7 @@ const handleLogin = function(req, resp) {
   let user = lib.getValidUser(req);
   if (!user)
     return lib.redirectInvalidUser(resp);
-  lib.setCookie(resp, user);
+  lib.setCookie(resp,user);
   resp.redirect('home');
 };
 
@@ -41,15 +50,13 @@ const logoutUser = function(req, resp) {
 };
 
 const handleNewTodo = function(req, resp) {
-  lib.validateUser(req, resp)
-  let fileContent = fs.readFileSync('./public/addTodo.html', 'utf8');
+  let fileContent = lib.getFileContents('./public/addTodo.html');
   resp.serve(fileContent)
 };
 
 const storeNewTodo = function(req, resp) {
   debugger;
-  lib.validateUser(req, resp);
-  let userName = req.cookies[' user'] || '';
+  let userName = getCookie(req,'user') || '';
   let userTodos = lib.getAllTodo(userName);
   console.log(req.body);
   todoDetails = req.body
@@ -61,16 +68,18 @@ const storeNewTodo = function(req, resp) {
 };
 
 const respondWithTodo = function(req, resp) {
-  let userName = req.cookies[' user'] || '';
+  debugger;
+  let userName = getCookie(req,'user') || '';
   let todoId = req.cookies[' todoId'] || '';
   let todos = lib.getAllTodo(userName);
   let todo = todos.find((todo) => todo.id == todoId);
   todo = JSON.stringify(todo);
+  console.log(todo);
   resp.serve(todo);
 };
 
 const respondWithTodos = function(req, resp) {
-  let userName = req.cookies[' user'] || '';
+  let userName = getCookie(req,'user') || '';
   let todos = lib.getAllTodo(userName);
   let todoAsString = JSON.stringify(todos);
   resp.serve(todoAsString);
@@ -86,7 +95,7 @@ const setTitle = function(req, resp) {
 };
 
 const respondEditPage = function(req, resp) {
-  let todoEditPage = fs.readFileSync('./public/todo.html', 'utf8');
+  let todoEditPage = lib.getFileContents('./public/todo.html');
   resp.serve(todoEditPage)
 };
 

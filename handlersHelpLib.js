@@ -1,5 +1,21 @@
 const fs = require('fs');
 const validUsers = require('./data/validUsers.js').validUsers;
+
+const fromJSON = function (str) {
+  return JSON.parse(str);
+};
+
+const getFileContents = function (url) {
+  let contents;
+  try {
+    contents = fs.readFileSync(url, 'utf8');
+  } catch (e) {
+  console.error(e)
+    return;
+  }
+  return contents;
+};
+
 const getContentType = function(filePath) {
   let fileExt = filePath.split(".").slice(-1)[0];
   let headers = {
@@ -12,39 +28,22 @@ const getContentType = function(filePath) {
   };
   return headers[fileExt];
 };
-let content;
-
-const getUsersTodos = function() {
-  try {
-    content = fs.readFileSync('./data/data.json', 'utf8');
-  } catch (e) {
-  console.error(e)
-    return;
-  }
-  let data = JSON.parse(content);
-  return data;
-}
 
 const getAllTodo = function(userName) {
-  let users = getUsersTodos();
+  let users = fromJSON(getFileContents('./data/data.json'));
   let user = users[userName];
   let todos =  user || [];
   return todos;
 };
 
 const storeTodos = function(userName, todoList) {
-  let users=getUsersTodos();
+  let users= fromJSON(getFileContents('./data/data.json'));
   users[userName]=todoList;
   let data = JSON.stringify(users, null, 1);
   fs.writeFile('./data/data.json', data, (err) => {
     if (err) console.log(`storage path ${filePath} not valid`);
   });
 }
-
-const validateUser = function(req, resp) {
-  if (!req.cookies.sessionid)
-    redirectInvalidUser(resp)
-};
 
 const redirectInvalidUser = function(resp) {
   resp.setHeader('Set-Cookie', `message=login failed; Max-Age=5`);
@@ -74,9 +73,8 @@ module.exports={
   setCookie,
   getAllTodo,
   storeTodos,
-  validateUser,
   redirectInvalidUser,
   getValidUser,
   hasAskedForToDo,
-
+  getFileContents
 }

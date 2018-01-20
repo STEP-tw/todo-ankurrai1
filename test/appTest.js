@@ -4,15 +4,6 @@ let request = require('./requestSimulator.js');
 process.env.COMMENT_STORE = "./testStore.json";
 let app = require('../app.js');
 let th = require('./testHelper.js');
-let validUsers = [{
-    userName: 'ankurrai',
-    password: 'ankur'
-  },
-  {
-    userName: 'yogi',
-    password: 'yogi'
-  }
-];
 
 describe('app', () => {
   describe('GET /bad', () => {
@@ -28,7 +19,7 @@ describe('app', () => {
   })
 
   describe('GET /', () => {
-    it('should serve index.html', done => {
+    it('should serve login.html', done => {
       request(app, {
         method: 'GET',
         url: '/'
@@ -40,8 +31,8 @@ describe('app', () => {
     })
   })
 
-  describe('GET /index.html', () => {
-    it('gives the index page', done => {
+  describe('GET /login.html', () => {
+    it('gives the login page to logged out user', done => {
       request(app, {
         method: 'GET',
         url: '/login'
@@ -49,6 +40,17 @@ describe('app', () => {
         th.status_is_ok(res);
         th.content_type_is(res, 'text/html');
         th.body_contains(res, 'TODO APP');
+        done();
+      })
+    })
+
+    it('should give user\'s home page for a logged in user',done=>{
+      request(app, {
+        method: 'GET',
+        url: '/login',
+        headers: {cookie:"sessionid=1516430776870; user=ankurrai"}
+      }, res => {
+        th.should_be_redirected_to(res,'home');
         done();
       })
     })
@@ -94,7 +96,7 @@ describe('app', () => {
   })
 
   describe('POST /login', () => {
-    it('redirects to loginPage for invalid user', done => {
+    it('redirects to loginPage for valid user', done => {
       request(app, {
           method: 'POST',
           url: '/login',

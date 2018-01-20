@@ -19,7 +19,6 @@ describe('Users', () => {
 
   it('should give title of user\'s todo ', () => {
     let todo = user.userTodos[0];
-    console.log();
     let title = todo.getTitle();
     assert.equal(title, 'my Todo');
   });

@@ -44,6 +44,7 @@ const respondWithError = function() {
 }
 
 const eventHandler = function(req, resp) {
+  debugger;
   req.cookies = qs.parse(req.headers.cookie||'',";");
   let content = "";
   req.on('data', data => content += data.toString());
