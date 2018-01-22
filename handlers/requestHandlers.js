@@ -1,54 +1,24 @@
 const fs = require('fs');
-const User = require('./models/user.js');
-const lib = require('./handlersHelpLib.js');
-const Todo = require('./models/todo.js');
-const Counter = require('./models/counter.js').Counter;
-
-const getCookie = function(req, cookieName) {
-  return req.cookies[`${cookieName}`] || req.cookies[` ${cookieName}`];
-};
-
-const retriveBehaviour = function(classObj, jsonObj) {
-  return obj = new classObj(...Object.values(jsonObj));
-};
-
-const getUser = function(userName) {
-  let user = usersData.find(user => user.name == userName);
-  return retriveBehaviour(User, user);
-};
-
-const getTitle = function(req) {
-  return req.body.title;
-};
-
-const updateData = function() {
-  let data = toJsonString(usersData);
-  fs.writeFileSync('./data/data.json',data);
-  debugger;
-};
-
-const getDescription = function(req) {
-  return req.body.description;
-};
-
-const toJsonString = o => JSON.stringify(o, null, 2);
-
-var usersData = lib.fromJSON(lib.getFileContents('./data/data.json'));
+const lib = require('./helperLib.js');
+const Todo = require('../models/todo.js');
+const Counter = require('../models/counter.js').Counter;
+const usersRepoPath = process.env.usersRepo || '../data/data.json';
+var usersData = lib.fromJSON(lib.getFileContents(usersRepoPath));
 //-----------------------------handlers---------------------------------//
 const serveLanding = function(req, res) {
   debugger;
-  if (getCookie(req, 'user')) {
+  if (lib.getCookie(req, 'user')) {
     res.redirect('home');
   } else {
     let data = lib.getFileContents('./public/login.html');
-    data = data.replace('loginFailedMessage', getCookie(req, 'message') || '');
+    data = data.replace('loginFailedMessage', lib.getCookie(req, 'message') || '');
     res.setHeader('Content-Type', 'text/html');
     res.serve(data);
   }
 }
 
 const handleTresspassing = function(req, res) {
-  let userName = getCookie(req, 'user');
+  let userName = lib.getCookie(req, 'user');
   let validUrls = ['/login', '/style/index.css', '/image/todo.jpg', '/'];
   debugger;
   if (!userName && !req.urlIsOneOf(validUrls) && req.fileExists(fs)) {
@@ -68,28 +38,17 @@ const serveRegularFile = function(req, res) {
 const serveHomePage = function(req, res) {
   debugger;
   let data = lib.getFileContents(`./public/home.html`);
-  let userName = getCookie(req, 'user') || '';
+  let userName = lib.getCookie(req, 'user') || '';
   data = data.replace('user', userName);
   res.serve(data);
 };
 
-const ifNewUserCreateRepo = function (req) {
-  let userName = req.body.userName;
-  if (!usersData.find(user=>user==userName)) {
-    let userId=new Counter(usersData.length);
-    let newUser=new User(userName,userId.increment());
-    usersData.push(newUser);
-    updateData();
-    debugger;
-  }
-  console.log(usersData);
-}
 const handleLogin = function(req, res) {
   let user = lib.getValidUser(req);
   if (!user)
     return lib.redirectInvalidUser(res);
   lib.setCookie(res, user);
-  ifNewUserCreateRepo(req);
+  lib.ifNewUserCreateRepo(req,usersData);
   res.redirect('home');
 };
 
@@ -105,21 +64,21 @@ const handleNewTodo = function(req, res) {
 
 const addTodo = function(req, res) {
   debugger;
-  let userName = getCookie(req, 'user');
-  let user = getUser(userName);
-  let title = getTitle(req);
-  let description = getDescription(req);
+  let userName = lib.getCookie(req, 'user');
+  let user = lib.getUser(usersData,userName);
+  let title = lib.getTitle(req);
+  let description = lib.getDescription(req);
   let idCounter = new Counter(user.todoCount);
   let todo = new Todo(idCounter.increment(), title, description);
   user.addTodo(todo);
   let userPosition = usersData.findIndex(everyUser => user.id == everyUser.id);
-  updateData();
+  lib.updateData(usersData);
   res.redirect('home');
 };
 
 const resondWithTodo = function(req, res) {
   debugger;
-  let userName = getCookie(req, 'user') || '';
+  let userName = lib.getCookie(req, 'user') || '';
   let todoId = req.cookies[' todoId'] || '';
   let todos = lib.getAllTodo(userName);
   let todo = todos.find((todo) => todo.id == todoId);
@@ -129,7 +88,7 @@ const resondWithTodo = function(req, res) {
 };
 
 const resondWithTodos = function(req, res) {
-  let userName = getCookie(req, 'user') || '';
+  let userName = lib.getCookie(req, 'user') || '';
   let todos = lib.getAllTodo(userName);
   let todoAsString = JSON.stringify(todos);
   res.serve(todoAsString);
