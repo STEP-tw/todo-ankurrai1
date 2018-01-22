@@ -1,15 +1,22 @@
-const Item = require('./item.js');
+let isIndex = type => type == 'index';
+
+let fetch = function(todoList, todoId, type='todo') {
+  if (isIndex(type)) {
+    return todoList.findIndex((todo) => todo.id == todoId);
+  }
+    return todoList.find(todo => todo.id == todoId);
+}
 
 class Todo{
-  constructor(id,title,description){
+  constructor(id,title,description,items,deletedItems){
     this.id=id;
     this.title = title;
     this.description = description||'';
-    this.items =[];
-    this.counter=0;
+    this.items = items || [];
+    this.deletedItems = deletedItems || [];
   }
 
-  retitle(newTitle) {
+  editTitle(newTitle) {
     this.title = newTitle;
   }
 
@@ -25,39 +32,37 @@ class Todo{
     this.description = newDescription;
   }
 
-  addItem(text,status) {
-    debugger;
-    status=status||false;
-    this.counter++;
-    this.items.push(new Item(this.counter,text,status));
+  addItem(item) {
+    this.items.push(item);
   }
 
-  editAItem(id,text) {
-    let item=this.items.find((item)=>item.id==id)
+  editItem(id,text) {
+    let item=fetch(this.items,id);
     item.changeText(text);
   }
 
   getItemStatus(id) {
-    let item=this.items.find((item)=>item.id==id)
-    item.isItemDone();
+    let item=fetch(this.items,id);
+    return item.isItemDone();
   }
 
   markItemAsDone(id) {
-    let item=this.items.find((item)=>item.id==id)
-    item.markAsDone();
+    let item=fetch(this.items,id);
+    return item.markAsDone();
   }
 
   markItemAsUndone(id) {
-    let item=this.items.find((item)=>item.id==id)
+    let item=fetch(this.items,id);
     item.markAsNotDone();
   }
 
-  deleteAItem(id) {
-    let itemIndex=this.items.findIndex((item)=>item.id==id)
+  deleteItem(id) {
+    let itemIndex=fetch(this.items,id,'index');
+    this.deletedItems.push(fetch(this.items,id));
     this.items.splice(itemIndex,1);
   }
 
-  getAllItem() {
+  get allItems() {
     return this.items;
   }
 

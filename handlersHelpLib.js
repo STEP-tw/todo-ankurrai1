@@ -76,5 +76,6 @@ module.exports={
   redirectInvalidUser,
   getValidUser,
   hasAskedForToDo,
-  getFileContents
+  getFileContents,
+  fromJSON
 }

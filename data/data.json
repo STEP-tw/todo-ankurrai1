@@ -1,40 +1,72 @@
-{
- "ankurrai": [
+[
   {
-   "id": 1,
-   "title": "hi",
-   "description": "hello",
-   "items": [
-    {
-     "id": 1,
-     "text": "asdf",
-     "done": false
-    },
-    {
-     "id": 2,
-     "text": "dsf",
-     "done": false
-    }
-   ],
-   "counter": 2
+    "name": "ankurrai",
+    "id": 1,
+    "todoList": [
+      {
+        "id": 1,
+        "title": "first todo",
+        "description": "collected and stored successfully",
+        "items": [],
+        "deletedItems": []
+      }
+    ],
+    "deletedTodos": []
   },
   {
-   "id": 1,
-   "title": "somthing",
-   "description": "a description",
-   "items": [
-    {
-     "id": 1,
-     "text": "first line",
-     "done": false
-    },
-    {
-     "id": 2,
-     "text": "second line",
-     "done": false
-    }
-   ],
-   "counter": 2
+    "name": "yogi",
+    "id": 2,
+    "todoList": [
+      {
+        "id": 1,
+        "title": "second todo",
+        "description": "added succesfully",
+        "items": [],
+        "deletedItems": []
+      }
+    ],
+    "deletedTodos": []
+  },
+  {
+    "name": "ankurrai",
+    "id": 3,
+    "todoList": [],
+    "deletedTodos": []
+  },
+  {
+    "name": "ankurrai",
+    "id": 4,
+    "todoList": [],
+    "deletedTodos": []
+  },
+  {
+    "name": "ankurrai",
+    "id": 5,
+    "todoList": [],
+    "deletedTodos": []
+  },
+  {
+    "name": "ankurrai",
+    "id": 6,
+    "todoList": [],
+    "deletedTodos": []
+  },
+  {
+    "name": "ankurrai",
+    "id": 7,
+    "todoList": [],
+    "deletedTodos": []
+  },
+  {
+    "name": "ankurrai",
+    "id": 8,
+    "todoList": [],
+    "deletedTodos": []
+  },
+  {
+    "name": "ankurrai",
+    "id": 9,
+    "todoList": [],
+    "deletedTodos": []
   }
- ]
-}
+]

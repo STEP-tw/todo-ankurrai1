@@ -1,20 +1,20 @@
 class Item {
-  constructor(id,text,status) {
-    this.id=id
+  constructor(id, text) {
+    this.id = id
     this.text = text;
-    this.done = status||false;
+    this.done = false;
   }
-  markAsDone(){
-    this.done = true;
+  markAsDone() {
+    return this.done = true;
   }
-  isItemDone(){
+  isItemDone() {
     return this.done;
   }
-  changeText(newText){
-    this.text = newText;
+  changeText(newText) {
+    return this.text = newText;
   }
   markAsNotDone() {
-    this.done = false;
+    return this.done = false;
   }
 }
 module.exports = Item;

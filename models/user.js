@@ -1,28 +1,46 @@
-const Todo = require('./todo.js');
+let isIndex = type => type == 'index';
 
-
-let User = function(userTodos) {
-  this.userTodos = userTodos || [];
-  this.counter = 0;
-};
-
-User.prototype = {
-
-  addNewTodo: function(todoDetails) {
-    debugger;
-    let title=todoDetails.Title;
-    let description=todoDetails.description;
-    let newTodo=new Todo(++this.counter, title, description);
-    let items=todoDetails.item||[];
-    items.forEach((item)=>{
-      newTodo.addItem(item);
-    });
-    this.userTodos.push(newTodo);
-  },
-
-  getUserTodos:function () {
-    return this.userTodos;
+let fetch = function(todoList, todoId, type='todo') {
+  if (isIndex(type)) {
+    return todoList.findIndex((todo) => todo.id == todoId);
   }
+    return todoList.find(todo => todo.id == todoId);
 }
 
+class User {
+  constructor(name, id, todoList,deletedTodos) {
+    this.name = name;
+    this.id = id;
+    this.todoList = todoList || [];
+    this.deletedTodos = deletedTodos||[];
+  }
+
+  emptyList(repo) {
+    return this.todoList = [];
+  }
+
+  addTodo(todo) {
+    return this.todoList.push(todo);
+  }
+
+  fetchTodo(todoId) {
+    return fetch(this.todoList, todoId);
+  }
+
+  deleteTodo(todoId) {
+    let todoIndex = fetch(this.todoList,todoId,'index');
+    let todo = fetch(this.todoList, todoId);
+    this.deletedTodos.push(todo);
+    this.todoList.splice(todoIndex, 1);
+  }
+
+  replaceTodo(todo) {
+    let position = fetch(this.todoList, todo.id,'index');
+    this.todoList[position]=todo;
+  }
+
+  get todoCount(){
+    return this.todoList.length;
+  }
+}
 module.exports = User;

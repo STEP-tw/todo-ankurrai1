@@ -4,6 +4,7 @@ let request = require('./requestSimulator.js');
 process.env.COMMENT_STORE = "./testStore.json";
 let app = require('../app.js');
 let th = require('./testHelper.js');
+let User = require('../models/user.js');
 
 describe('app', () => {
   describe('GET /bad', () => {

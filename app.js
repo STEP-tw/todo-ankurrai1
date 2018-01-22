@@ -19,7 +19,7 @@ app.get('/todoToEdit',handlersLib.resondEditPage);
 app.get('/newTodo',handlersLib.handleNewTodo);
 
 app.post('/login',handlersLib.handleLogin);
-app.post('/saveTodo',handlersLib.storeNewTodo);
+app.post('/addTodo',handlersLib.addTodo);
 
 app.postProcessUse(handlersLib.serveRegularFile);
 

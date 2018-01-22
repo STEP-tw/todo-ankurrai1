@@ -1,48 +1,85 @@
-let chai = require('chai');
-let assert = chai.assert;
 const User = require('../models/user.js');
+const assert = require('chai').assert;
+const Todo = require('../models/todo.js');
+var user;
 
-let user = {};
+describe('User',function () {
+  beforeEach(function () {
+    user = new User('ankur',1);
+  })
 
-describe('Users', () => {
+  it('should contain a unique Id',function () {
+    assert.propertyVal(user,'id',1);
+  })
 
-  let userTodo = {
-    Title: 'my Todo',
-    description: 'something',
-    item: []
-  };
+  it('should contain name',function () {
+    assert.propertyVal(user,'name','ankur');
+  })
 
-  beforeEach(() => {
-    user = new User([]);
-    user.addNewTodo(userTodo);
-  });
+  it('should contain a todo list',function () {
+    assert.deepPropertyVal(user,'todoList',[]);
+  })
 
-  it('should give title of user\'s todo ', () => {
-    let todo = user.userTodos[0];
-    let title = todo.getTitle();
-    assert.equal(title, 'my Todo');
-  });
+  it('should contain a list of deleted todos',function () {
+    assert.deepPropertyVal(user,'deletedTodos',[]);
+  })
 
-  it('should give description of user\'s todo', () => {
-    let todo = user.userTodos[0];
-    let description = todo.getDescription();
-    assert.equal(description, 'something');
-  });
+  describe('emptyList',function () {
+    it('should clear list',function () {
+      let todo= {todo: "1"};
+      user.addTodo(todo);
+      user.emptyList();
+      assert.deepEqual(user.todoList,[]);
+    })
+  })
 
-  it('should give items', () => {
-    let todo = user.userTodos[0];
-    let items = todo.getAllItem();
-    assert.deepEqual(items, []);
-  });
-  it('should give user\'s  all todo', () => {
-    let actual = user.getUserTodos();
-    let expected = [{
-      id: 1,
-      title: 'my Todo',
-      description: 'something',
-      items: [],
-      counter: 0
-    }]
-    assert.deepEqual(actual, expected);
-  });
+  describe('addTodo',function () {
+    it('should be able to add a todo',function () {
+      let todo = {id: 1,hi: 'hello'};
+      user.addTodo(todo);
+      assert.include(user.todoList,todo);
+    })
+  })
+
+  describe('fetchTodo',function () {
+    it('should be able to fetch a todo',function () {
+      let todo = {id: 1,hi: 'hello'};
+      user.addTodo(todo);
+      let actual = user.fetchTodo(1);
+      assert.deepEqual(actual,todo);
+    })
+  })
+
+  describe('deleteTodo',function () {
+    var todo;
+    beforeEach(function () {
+      todo = {id: 1,hi: 'hello'};
+      user.addTodo(todo);
+      user.deleteTodo(1);
+    })
+    it('should be able to delete a todo',function () {
+      assert.deepEqual(user.todoList,[]);
+    })
+
+    it('should add the deleted todo in deletedTodo list',function () {
+      assert.deepInclude(user.deletedTodos,todo);
+    })
+  })
+
+  describe('editTodo',function () {
+    it('should replace a given todo',function () {
+      let todo = new Todo(2,'title','description');
+      user.addTodo(todo);
+      user.replaceTodo(todo);
+      assert.deepInclude(user.todoList,todo);
+    })
+  })
+
+  describe('todoCount',function () {
+    it('should return no of todos user have ',function () {
+      let todo = new Todo(2,'title','description');
+      user.addTodo(todo);
+      assert.equal(user.todoCount,1);
+    })
+  })
 })

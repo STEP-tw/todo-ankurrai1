@@ -1,86 +1,120 @@
 let chai = require('chai');
 let assert = chai.assert;
 let Todo = require('../models/todo.js');
+let Item=require('../models/item.js');
 
-let todo={};
+let todo, item;
 
 describe('Todo',()=>{
   beforeEach(() => {
-    todo =new Todo(1,"somthing","there is a description");;
-  });
-  describe('new todo',()=>{
-    it('should give new todo',()=>{
-      let expected = {id:1,title:"somthing",description:"there is a description",items:[],counter:0};
-      assert.deepEqual(expected,todo);
+    todo =new Todo(1,"title","description");
+    item=new Item(1,"a Item")
+    todo.addItem(item);
+  })
+
+  describe('todo\'s state',function () {
+    it('should have an id',function () {
+      assert.propertyVal(todo,'id',1);
+    })
+
+    it('should have a title',function () {
+      assert.propertyVal(todo,'title','title');
+    })
+
+    it('should have a description if initially given',function () {
+      assert.propertyVal(todo,'description','description');
+    })
+
+    it('should have empty string if description not given',function () {
+      let todo2 = new Todo(3,'title');
+      assert.propertyVal(todo2,'description','');
+    })
+
+    it('should have a given list of items',function () {
+      let items = [2,3];
+      let todo = new Todo(3,'title',null,items)
+      assert.propertyVal(todo,'items',items);
+    })
+
+    it('should have empty list if items not given',function () {
+      let todo = new Todo(3,'title');
+      assert.deepPropertyVal(todo,'items',[]);
+    })
+
+    it('should have a given list of deleted items',function () {
+      let deletedItems = [2,3];
+      let todo = new Todo(3,'title',null,null,deletedItems)
+      assert.propertyVal(todo,'deletedItems',deletedItems);
+    })
+
+    it('should have a given list of deleted items',function () {
+      assert.deepPropertyVal(todo,'deletedItems',[]);
     })
   })
+
   describe('should change Title',()=>{
-    it('retitle save new text as title',()=>{
+    it('editTitle save new text as title',()=>{
       let expected="new title"
-      todo.retitle("new title");
-      assert.equal(expected,todo.title);
+      todo.editTitle("new title");
+      assert.propertyVal(todo,'title',expected);
     })
   })
   describe('edit description',()=>{
     it('should change Description',()=>{
       let expected ="new Description";
       todo.editDescription("new Description");
-      assert.equal(expected,todo.description);
+      assert.propertyVal(todo,'description',expected);
     })
   })
   describe('add new item',()=>{
     it('should add new item in items',()=>{
-      let items =[{text:"a Item",id:1,done:false}];
-      todo.addItem("a Item");
-      assert.deepEqual(items,todo.items);
+      todo.addItem(item);
+      assert.deepInclude(todo.items,item);
     })
   })
   describe('delete Item',()=>{
     it('should delete a item ',()=>{
-      todo.addItem("new item");
-      todo.deleteAItem(1);
-      assert.deepEqual(todo.items,[]);
+      todo.deleteItem(item);
+      assert.notDeepInclude(todo.items,item);
+    })
+  })
+  describe('getItemStatus',()=>{
+    it('should give false for undone item ',()=>{
+      assert.isNotOk(todo.getItemStatus(1));
     })
   })
   describe('edit Item',()=>{
-    it('should edit a item text',()=>{
-      todo.addItem("item",false);
-      todo.editAItem(1,"newItem");
-      let expected=[{id:1,text:"newItem",done:false}]
-      assert.deepEqual(todo.items,expected);
+    it('should edit an item',()=>{
+      todo.editItem(1,"newItem");
+      let expected={id:1,text:"newItem",done:false}
+      assert.deepInclude(todo.items,expected);
     })
   })
   describe('markAsDone',()=>{
-    it('should mark Item as done',()=>{
-      todo.addItem("new Item");
+    it('should mark an Item as done',()=>{
       todo.markItemAsDone(1);
-      let expected=[{id:1,text:"new Item",done:true}]
-      assert.deepEqual(todo.items,expected);
+      assert.isOk(todo.getItemStatus(1));
     })
   })
   describe('markItemAsUndone',()=>{
     it('should mark Item as not Done',()=>{
-      todo.addItem("A item");
       todo.markItemAsUndone(1);
-      let expected=[{id:1,text:"A item",done:false}]
-      assert.deepEqual(todo.items,expected);
+      assert.isNotOk(todo.getItemStatus(1));
     })
   })
   describe('get items',()=>{
     it('should give all todo items',()=>{
-      todo.addItem("A item");
-      let expected=[{id:1,text:"A item",done:false}]
-      assert.deepEqual(todo.getAllItem(),expected);
+      assert.deepInclude(todo.allItems,item);
     })
   })
   describe('get title',()=>{
     it('should give title of todo',()=>{
-      assert.equal(todo.getTitle(),"somthing");
+      assert.equal(todo.getTitle(),"title");
     })
   })
   describe('get description',()=>{
     it('should give description of todo',()=>{
-      assert.equal(todo.getDescription(),"there is a description");
+      assert.equal(todo.getDescription(),"description");
     })
   })
 })
