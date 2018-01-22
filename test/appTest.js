@@ -170,4 +170,21 @@ describe('app', () => {
       })
     })
   })
+
+  describe('GET /home',function () {
+    it('should give users home for logged in user', done => {
+      request(app, {
+        method: 'GET',
+        url: '/home',
+        headers: {
+          cookie: "sessionid=1516430776870; user=ankurrai"
+        }
+      }, res => {
+        th.status_is_ok(res);
+        th.content_type_is(res,'text/html');
+        th.body_contains(res,'User Home');
+        done();
+      })
+    })
+  })
 })

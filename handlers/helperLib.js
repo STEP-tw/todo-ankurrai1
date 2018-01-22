@@ -1,4 +1,7 @@
-const usersRepoPath = process.env.usersRepo || '../data/data.json';
+const getUsersRepoPath = function () {
+  return process.env.usersRepo || './data/data.json';
+}
+const usersRepoPath = getUsersRepoPath();
 const fs = require('fs');
 const validUsers = require('../data/validUsers.js').validUsers;
 const User = require('../models/user.js');
@@ -17,8 +20,8 @@ const fromJSON = function(str) {
   return JSON.parse(str);
 };
 
-const getFileContents = function(url) {
-  let contents = fs.readFileSync(url, 'utf8');
+const getFileContents = function(url,fileSystem=fs) {
+  let contents = fileSystem.readFileSync(url, 'utf8');
   return contents;
 };
 
@@ -35,13 +38,6 @@ const getContentType = function(filePath) {
   return headers[fileExt];
 };
 
-const getAllTodo = function(userName) {
-  let users = fromJSON(getFileContents(usersRepoPath));
-  let user = users[userName];
-  let todos = user || [];
-  return todos;
-};
-
 const redirectInvalidUser = function(res) {
   res.setHeader('Set-Cookie', `message=login failed; Max-Age=5`);
   res.redirect('login');
@@ -53,18 +49,13 @@ const setCookie = function(res, user) {
   res.setHeader('Set-Cookie', [`sessionid=${sessionid}`, `user=${user.userName}`]);
 };
 
-const getValidUser = function(req) {
+const getValidUser = function(req,validUsersList=validUsers) {
   let userName = getUserName(req);
   let password = getPassword(req);
-  return validUsers.find(validUser => {
+  return validUsersList.find(validUser => {
     return validUser.userName == userName && validUser.password == password;
   });
 };
-
-const hasAskedForToDo = (req) => {
-  return req.method == 'GET' && req.url.startsWith('/todo_');
-}
-
 
 const getCookie = function(req, cookieName) {
   return req.cookies[`${cookieName}`] || req.cookies[` ${cookieName}`];
@@ -89,21 +80,21 @@ const fetchUser = function(usersData, userName) {
   return usersData.find(user => user.name == userName);
 };
 
-const getUser = function(usersData, userName) {
+const getUserWithBehaviour = function(usersData, userName) {
   let user = fetchUser(usersData, userName);
   return retriveBehaviour(User, user);
 };
 
-const updateData = function(usersData) {
+const updateData = function(usersData,path,fileSystem=fs) {
   let data = toJsonString(usersData);
-  fs.writeFileSync(usersRepoPath, data);
+  return fileSystem.writeFileSync(path, data);
 };
 
 const createNewUser = function(usersData, userName) {
   let userId = new Counter(usersData.length);
   let newUser = new User(userName, userId.increment());
   usersData.push(newUser);
-  updateData(usersData);
+  updateData(usersData,usersRepoPath);
 };
 
 const ifNewUserCreateRepo = function(req, usersData) {
@@ -112,15 +103,21 @@ const ifNewUserCreateRepo = function(req, usersData) {
     createNewUser(usersData, userName);
 }
 
+const getFilePath = function (req) {
+  return `./public${req.url}`;
+}
+
+const replacePageContent = function (data,textToBeReplaced,text) {
+  return data = data.replace(textToBeReplaced, text);
+};
+
 module.exports = {
   getUserName,
   getPassword,
   getContentType,
   setCookie,
-  getAllTodo,
   redirectInvalidUser,
   getValidUser,
-  hasAskedForToDo,
   getFileContents,
   fromJSON,
   getCookie,
@@ -128,7 +125,12 @@ module.exports = {
   getTitle,
   getDescription,
   toJsonString,
-  getUser,
+  getUserWithBehaviour,
   updateData,
-  ifNewUserCreateRepo
+  ifNewUserCreateRepo,
+  fetchUser,
+  createNewUser,
+  getUsersRepoPath,
+  getFilePath,
+  replacePageContent
 }

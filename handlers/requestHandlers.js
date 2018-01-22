@@ -2,7 +2,7 @@ const fs = require('fs');
 const lib = require('./helperLib.js');
 const Todo = require('../models/todo.js');
 const Counter = require('../models/counter.js').Counter;
-const usersRepoPath = process.env.usersRepo || '../data/data.json';
+const usersRepoPath = lib.getUsersRepoPath();
 var usersData = lib.fromJSON(lib.getFileContents(usersRepoPath));
 //-----------------------------handlers---------------------------------//
 const serveLanding = function(req, res) {
@@ -27,8 +27,8 @@ const handleTresspassing = function(req, res) {
   }
 };
 const serveRegularFile = function(req, res) {
-  let filePath = req.url;
-  fs.readFile(`./public${filePath}`, (error, data) => {
+  let filePath = lib.getFilePath(req);
+  fs.readFile(filePath, (error, data) => {
     if (error) return res.resondWithError();
     res.setHeader('Content-Type', lib.getContentType(filePath))
     res.serve(data);
@@ -36,10 +36,12 @@ const serveRegularFile = function(req, res) {
 };
 
 const serveHomePage = function(req, res) {
-  debugger;
-  let data = lib.getFileContents(`./public/home.html`);
-  let userName = lib.getCookie(req, 'user') || '';
-  data = data.replace('user', userName);
+  let filePath = lib.getFilePath(req) + '.html';
+  let data = lib.getFileContents(filePath);
+  let userName = lib.getCookie(req, 'user');
+  let textToReplace = 'user';
+  lib.replacePageContent(data,textToReplace,userName);
+  res.setHeader('Content-Type', lib.getContentType(filePath));
   res.serve(data);
 };
 
@@ -58,54 +60,30 @@ const logoutUser = function(req, res) {
 };
 
 const handleNewTodo = function(req, res) {
-  let fileContent = lib.getFileContents('./public/addTodo.html');
+  let fileContent = lib.getFileContents(lib.getFilePath(req));
   res.serve(fileContent)
 };
 
 const addTodo = function(req, res) {
   debugger;
   let userName = lib.getCookie(req, 'user');
-  let user = lib.getUser(usersData,userName);
+  let user = lib.getUserWithBehaviour(usersData,userName);
   let title = lib.getTitle(req);
   let description = lib.getDescription(req);
   let idCounter = new Counter(user.todoCount);
   let todo = new Todo(idCounter.increment(), title, description);
   user.addTodo(todo);
   let userPosition = usersData.findIndex(everyUser => user.id == everyUser.id);
-  lib.updateData(usersData);
+  lib.updateData(usersData,usersRepoPath);
   res.redirect('home');
 };
 
-const resondWithTodo = function(req, res) {
-  debugger;
-  let userName = lib.getCookie(req, 'user') || '';
-  let todoId = req.cookies[' todoId'] || '';
-  let todos = lib.getAllTodo(userName);
-  let todo = todos.find((todo) => todo.id == todoId);
-  todo = JSON.stringify(todo);
-  console.log(todo);
-  res.serve(todo);
-};
 
-const resondWithTodos = function(req, res) {
-  let userName = lib.getCookie(req, 'user') || '';
-  let todos = lib.getAllTodo(userName);
-  let todoAsString = JSON.stringify(todos);
-  res.serve(todoAsString);
-  debugger;
-};
 
-const setTitle = function(req, res) {
-  let requstUrl = req.url
-  if (lib.hasAskedForToDo(req)) {
-    let todoId = requstUrl.substr(requstUrl.lastIndexOf("_") + 1);
-    res.setHeader('Set-Cookie', `todoId=${todoId}; Max-Age=10`);
-    res.redirect('todoToEdit');
-  }
-};
+
 
 const resondEditPage = function(req, res) {
-  let todoEditPage = lib.getFileContents('./public/todo.html');
+  let todoEditPage = lib.getFileContents(lib.getFilePath(req));
   res.serve(todoEditPage)
 };
 
@@ -113,13 +91,10 @@ module.exports = {
   serveLanding,
   serveHomePage,
   logoutUser,
-  resondWithTodos,
-  resondWithTodo,
   resondEditPage,
   handleNewTodo,
   handleLogin,
   addTodo,
   serveRegularFile,
-  setTitle,
   handleTresspassing
 }
