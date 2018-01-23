@@ -17,7 +17,6 @@ const fileExists = function (fs) {
 };
 
 const runProcessors = function(processors, req, res) {
-  debugger;
   if (processors.length == 0) return;
   processors.forEach((process)=>{
     if (res.finished) return;
@@ -49,7 +48,6 @@ const resondWithError = function() {
 }
 
 const eventHandler = function(req, res) {
-  debugger;
   req.cookies = qs.parse(req.headers.cookie||'',";");
   let content = "";
   req.on('data', data => content += data.toString());

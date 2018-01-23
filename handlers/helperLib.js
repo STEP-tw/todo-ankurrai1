@@ -33,7 +33,8 @@ const getContentType = function(filePath) {
     "html": "text/html",
     "css": "text/css",
     "jpg": "image/jpg",
-    "gif": "image/gif"
+    "gif": "image/gif",
+    "txt": "text/plain"
   };
   return headers[fileExt];
 };
@@ -80,7 +81,8 @@ const fetchUser = function(usersData, userName) {
   return usersData.find(user => user.name == userName);
 };
 
-const getUserWithBehaviour = function(usersData, userName) {
+const getUserWithBehaviour = function(usersData, req) {
+  let userName = getCookie(req, 'user');
   let user = fetchUser(usersData, userName);
   return retriveBehaviour(User, user);
 };

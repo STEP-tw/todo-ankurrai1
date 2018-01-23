@@ -20,7 +20,6 @@ const serveLanding = function(req, res) {
 const handleTresspassing = function(req, res) {
   let userName = lib.getCookie(req, 'user');
   let validUrls = ['/login', '/style/index.css', '/image/todo.jpg', '/'];
-  debugger;
   if (!userName && !req.urlIsOneOf(validUrls) && req.fileExists(fs)) {
     res.setHeader('Set-Cookie', 'message=Kindly login for more access; Max-Age=5');
     res.redirect('login');
@@ -40,9 +39,18 @@ const serveHomePage = function(req, res) {
   let data = lib.getFileContents(filePath);
   let userName = lib.getCookie(req, 'user');
   let textToReplace = 'user';
-  lib.replacePageContent(data,textToReplace,userName);
+  data = lib.replacePageContent(data,textToReplace,userName);
   res.setHeader('Content-Type', lib.getContentType(filePath));
   res.serve(data);
+};
+
+const getTodoList = function (req,res) {
+  debugger;
+  let user = lib.getUserWithBehaviour(usersData,req);
+  let todos = user.todoList;
+  todos = lib.toJsonString(todos);
+  res.setHeader('Content-Type',lib.getContentType('todos.txt'));
+  res.serve(todos);
 };
 
 const handleLogin = function(req, res) {
@@ -60,14 +68,14 @@ const logoutUser = function(req, res) {
 };
 
 const handleNewTodo = function(req, res) {
-  let fileContent = lib.getFileContents(lib.getFilePath(req));
+  let fileContent = lib.getFileContents(lib.getFilePath(req)+ '.html');
+  res.setHeader('Content-Type', 'text/html');
   res.serve(fileContent)
 };
 
 const addTodo = function(req, res) {
   debugger;
-  let userName = lib.getCookie(req, 'user');
-  let user = lib.getUserWithBehaviour(usersData,userName);
+  let user = lib.getUserWithBehaviour(usersData,req);
   let title = lib.getTitle(req);
   let description = lib.getDescription(req);
   let idCounter = new Counter(user.todoCount);
@@ -78,23 +86,29 @@ const addTodo = function(req, res) {
   res.redirect('home');
 };
 
-
-
-
-
-const resondEditPage = function(req, res) {
-  let todoEditPage = lib.getFileContents(lib.getFilePath(req));
-  res.serve(todoEditPage)
+const editTodo=function (req,res) {
+  debugger;
+  console.log(req.body)
+  let user=lib.getUserWithBehaviour(usersData,req);
+  let todo=user.fetchTodo(lib.getCookie(req,'todoId'));
+  todo=lib.retriveBehaviour(Todo,todo);
+  todo.editTitle(lib.getTitle(req));
+  todo.editDescription(lib.getDescription(req));
+  user.replaceTodo(todo);
+  lib.updateData(usersData,usersRepoPath);
+  res.setHeader('Set-Cookie', 'todoId=0; Max-Age=0');
+  res.redirect('home');
 };
 
 module.exports = {
   serveLanding,
   serveHomePage,
   logoutUser,
-  resondEditPage,
   handleNewTodo,
   handleLogin,
   addTodo,
   serveRegularFile,
-  handleTresspassing
+  handleTresspassing,
+  getTodoList,
+  editTodo
 }

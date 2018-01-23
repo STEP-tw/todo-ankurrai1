@@ -156,7 +156,7 @@ describe('app', () => {
     })
   })
 
-  describe('POST /addTodo',function () {
+  describe('POST /addTodo', function() {
     it('should redirect user to viewing(userHome) page', done => {
       request(app, {
         method: 'POST',
@@ -171,7 +171,7 @@ describe('app', () => {
     })
   })
 
-  describe('GET /home',function () {
+  describe('GET /home', function() {
     it('should give users home for logged in user', done => {
       request(app, {
         method: 'GET',
@@ -181,8 +181,57 @@ describe('app', () => {
         }
       }, res => {
         th.status_is_ok(res);
-        th.content_type_is(res,'text/html');
-        th.body_contains(res,'User Home');
+        th.content_type_is(res, 'text/html');
+        th.body_contains(res, 'User Home');
+        done();
+      })
+    })
+  })
+
+  describe('POST /editTodo', function() {
+    it('should redirect the user to home ', done => {
+      request(app, {
+        method: 'POST',
+        url: '/editTodo',
+        headers: {
+          cookie: "sessionid=1516430776870; user=ankurrai; todoId=1;"
+        },
+        body: 'title=new&description=todo'
+      }, res => {
+        th.should_have_cookie(res, 'todoId', '0');
+        th.should_be_redirected_to(res, 'home');
+        done();
+      })
+    })
+  })
+  describe('GET /createNewTodo', function() {
+    it('should give page to create new todo ', done => {
+      request(app, {
+        method: 'GET',
+        url: '/createNewTodo',
+        headers: {
+          cookie: "sessionid=1516430776870; user=ankurrai; "
+        }
+      }, res => {
+        th.status_is_ok(res);
+        th.content_type_is(res, 'text/html');
+        th.body_contains(res, 'write your todo');
+        done();
+      })
+    })
+  })
+  describe('GET /userTodos', function() {
+    it('should give userTodos', done => {
+      request(app, {
+        method: 'GET',
+        url: '/userTodos',
+        headers: {
+          cookie: "sessionid=1516430776870; user=ankurrai; "
+        }
+      }, res => {
+        th.status_is_ok(res);
+        th.content_type_is(res, 'text/plain');
+        th.body_contains(res, 'todo');
         done();
       })
     })
