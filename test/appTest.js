@@ -236,4 +236,19 @@ describe('app', () => {
       })
     })
   })
+
+  describe('POST /deleteTodo',function () {
+    it('should have a status of 201',done => {
+      request(app, {
+        method: 'POST',
+        url: '/deleteTodo',
+        headers: {
+          cookie: "sessionid=1516430776870; user=ankurrai; "
+        }
+      }, res => {
+        th.statusCode_is_created(res);
+        done();
+      })
+    })
+  })
 })

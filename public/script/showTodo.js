@@ -27,21 +27,17 @@ function edit(index,id) {
   todoBlock[index].appendChild(newdiv);
 }
 
-// function displayTitleWithDesc(todo) {
-//   let id = todo.id;
-//   return `
-//   <div class="todoBlock">
-//   title - ${todo.title}
-//   <p>description - ${todo.description}</p>
-//   <input class="editButton" type="button" onclick="edit(${index},${id})" name="edit" value="edit">
-//   </div><br>
-//   `
-// }
-//
-// let showTodo = function () {
-//   createRequest()
-// };
-
+function displayTitleWithDesc(todo,index) {
+  let id = todo.id;
+  return `
+  <div class="todoBlock">
+  <h5>title - ${todo.title}<h5>
+  <p>description - ${todo.description}</p>
+  <input type="button" onclick="edit(${index},${id})" name="edit" value="edit">
+  <input type="button" onclick="deleteTodo(${index},${id})" value="Delete">
+  </div>
+  `
+}
 const getNewItemBox = function() {
   let orderedList = document.getElementById('items');
   let item = document.createElement('li');

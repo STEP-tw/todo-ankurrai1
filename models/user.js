@@ -30,6 +30,7 @@ class User {
   deleteTodo(todoId) {
     let todoIndex = fetch(this.todoList,todoId,'index');
     let todo = fetch(this.todoList, todoId);
+    console.log('------------------------',todoIndex);
     this.deletedTodos.push(todo);
     this.todoList.splice(todoIndex, 1);
   }

@@ -87,8 +87,6 @@ const addTodo = function(req, res) {
 };
 
 const editTodo=function (req,res) {
-  debugger;
-  console.log(req.body)
   let user=lib.getUserWithBehaviour(usersData,req);
   let todo=user.fetchTodo(lib.getCookie(req,'todoId'));
   todo=lib.retriveBehaviour(Todo,todo);
@@ -100,6 +98,14 @@ const editTodo=function (req,res) {
   res.redirect('home');
 };
 
+const deleteTodo = function (req,res) {
+  console.log(req.body);
+  let user=lib.getUserWithBehaviour(usersData,req);
+  user.deleteTodo(req.body.todoId);
+  lib.updateData(usersData,usersRepoPath);
+  res.statusCode = 201;
+  res.end();
+}
 module.exports = {
   serveLanding,
   serveHomePage,
@@ -110,5 +116,6 @@ module.exports = {
   serveRegularFile,
   handleTresspassing,
   getTodoList,
-  editTodo
+  editTodo,
+  deleteTodo
 }

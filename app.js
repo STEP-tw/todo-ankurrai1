@@ -14,6 +14,7 @@ app.get('/createNewTodo',handlersLib.handleNewTodo);
 app.post('/editTodo',handlersLib.editTodo);
 app.post('/login',handlersLib.handleLogin);
 app.post('/addTodo',handlersLib.addTodo);
+app.post('/deleteTodo',handlersLib.deleteTodo);
 app.postProcessUse(handlersLib.serveRegularFile);
 
 module.exports=app;
