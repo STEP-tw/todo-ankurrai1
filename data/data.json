@@ -2,33 +2,41 @@
   {
     "name": "ankurrai",
     "id": 1,
-    "todoList": [],
-    "deletedTodos": [
-      {
-        "id": 2,
-        "title": "2nd todo",
-        "description": "df",
-        "items": [],
-        "deletedItems": []
-      },
+    "todoList": [
       {
         "id": 1,
-        "title": "1st",
-        "description": "",
-        "items": [],
+        "title": "1st todo",
+        "description": "now we are fine",
+        "items": [{"text": "hello"},{"text": "hi"}],
         "deletedItems": []
       },
       {
         "id": 3,
         "title": "3rd todo",
-        "description": "sdf",
+        "description": "im can be deleted",
         "items": [],
         "deletedItems": []
       },
       {
-        "id": 1,
-        "title": "asdfasdfds",
-        "description": "asdfasdf",
+        "id": 4,
+        "title": "im no4 ",
+        "description": "if you want check in the console",
+        "items": [],
+        "deletedItems": []
+      },
+      {
+        "id": 5,
+        "title": "hii",
+        "description": "ehll",
+        "items": [],
+        "deletedItems": []
+      }
+    ],
+    "deletedTodos": [
+      {
+        "id": 2,
+        "title": "2nd",
+        "description": "hello",
         "items": [],
         "deletedItems": []
       }

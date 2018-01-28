@@ -2,13 +2,13 @@ let createRequest = function(callBackFunction, contentRequested, bodyMessage = n
   var xhr = new XMLHttpRequest();
   xhr.addEventListener("load", callBackFunction);
   xhr.open(method, contentRequested);
-  xhr.setRequestHeader('Content-Type', 'text/plain');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   console.log('this is the ', bodyMessage);
   xhr.send(bodyMessage);
 }
 
 let deleteTodo = function(index, todoId) {
-  event.target.parentElement.parentElement.parentElement.remove();
+  event.target.parentElement.parentElement.remove();
   createRequest(()=>{}, "deleteTodo", `todoId=${todoId}`, 'POST');
 };
 

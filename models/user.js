@@ -1,6 +1,7 @@
 let isIndex = type => type == 'index';
 
 let fetch = function(todoList, todoId, type='todo') {
+  debugger;
   if (isIndex(type)) {
     return todoList.findIndex((todo) => todo.id == todoId);
   }
@@ -28,9 +29,9 @@ class User {
   }
 
   deleteTodo(todoId) {
+    debugger;
     let todoIndex = fetch(this.todoList,todoId,'index');
     let todo = fetch(this.todoList, todoId);
-    console.log('------------------------',todoIndex);
     this.deletedTodos.push(todo);
     this.todoList.splice(todoIndex, 1);
   }
@@ -41,7 +42,7 @@ class User {
   }
 
   get todoCount(){
-    return this.todoList.length;
+    return this.todoList.length + this.deletedTodos.length;
   }
 }
 module.exports = User;

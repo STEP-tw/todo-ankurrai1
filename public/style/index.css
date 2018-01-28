@@ -6,7 +6,7 @@
 }
 
 h1 {
-  font-size: 50px;
+  font-size: 20px;
   color: steelBlue;
   border-bottom: 3px solid gray;
   padding-bottom: 4px;
@@ -45,13 +45,41 @@ a {
   font-weight: bold;
 }
 
-#form {
-  float: right;
-  width: 50%;
+#newTodo{
+  float: left;
 }
 
-.titles {
-  font-size: 20px;
+#logout{
+  font-size: 15px;
+  float: right;
+}
+
+#itemsList{
+  text-align: justify;
+  list-style-type: square;
+  list-style-position: inside;
+}
+.title {
+  padding-bottom: 5px;
   font-family: sans-serif;
-  color: steelBlue;
+  font-weight: bold;
+  font-size: 20px;
+}
+.desc{
+  font-family: sans-serif;
+  font-size: 15px;
+  font-style: italic;
+}
+
+.leftMenu {
+  float: left;
+  width: 25%;
+  padding-left: 35px;
+  padding-top: 50px;
+  border-right: 3px solid gray;
+  background-color: #fafafa;
+}
+.rightMenu {
+  width: 70%;
+  float: right;
 }

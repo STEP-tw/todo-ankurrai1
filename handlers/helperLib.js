@@ -75,6 +75,9 @@ const getDescription = function(req) {
   return req.body.description;
 };
 
+const getTodoId = function (req) {
+  return req.body.todoId;
+}
 const toJsonString = o => JSON.stringify(o, null, 2);
 
 const fetchUser = function(usersData, userName) {
@@ -113,6 +116,14 @@ const replacePageContent = function (data,textToBeReplaced,text) {
   return data = data.replace(textToBeReplaced, text);
 };
 
+const urlIsOneOf = function(urls,url) {
+  return urls.includes(url);
+};
+
+const fileExists = function (fs,url) {
+  return fs.existsSync('./public' + url);
+};
+
 module.exports = {
   getUserName,
   getPassword,
@@ -126,6 +137,7 @@ module.exports = {
   retriveBehaviour,
   getTitle,
   getDescription,
+  getTodoId,
   toJsonString,
   getUserWithBehaviour,
   updateData,
@@ -134,5 +146,7 @@ module.exports = {
   createNewUser,
   getUsersRepoPath,
   getFilePath,
-  replacePageContent
+  replacePageContent,
+  urlIsOneOf,
+  fileExists
 }

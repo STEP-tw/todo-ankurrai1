@@ -1,254 +1,191 @@
 process.env.usersRepo = "./test/testData/usersRepo.json";
+const request = require('supertest');
 let chai = require('chai');
 let assert = chai.assert;
-let request = require('./requestSimulator.js');
 let app = require('../app.js');
 let th = require('./testHelper.js');
 let User = require('../models/user.js');
 
+var end;
 describe('app', () => {
+  beforeEach(function() {
+    handleError = function(done) {
+      return function(err, res) {
+        if (err) return done(err);
+        done();
+      };
+    }
+  })
   describe('GET /bad', () => {
     it('resonds with 404', done => {
-      request(app, {
-        method: 'GET',
-        url: '/bad'
-      }, (res) => {
-        assert.equal(res.statusCode, 404);
-        done();
-      })
+      request(app)
+        .get('/bad')
+        .expect(404)
+        .end(handleError(done));
     })
   })
 
   describe('GET /', () => {
     it('should serve login.html', done => {
-      request(app, {
-        method: 'GET',
-        url: '/'
-      }, (res) => {
-        th.status_is_ok(res);
-        th.body_contains(res, 'TODO APP');
-        done();
-      })
+      request(app)
+        .get('/')
+        .expect(200)
+        .expect('Content-Type', "text/html; charset=utf-8")
+        .expect(/TODO APP/)
+        .end(handleError(done))
     })
   })
 
   describe('GET /login.html', () => {
     it('should take logged out user to login page', done => {
-      request(app, {
-        method: 'GET',
-        url: '/login'
-      }, res => {
-        th.status_is_ok(res);
-        th.content_type_is(res, 'text/html');
-        th.body_contains(res, 'TODO APP');
-        done();
-      })
+      request(app)
+        .get('/login')
+        .expect(200)
+        .expect('Content-Type', "text/html; charset=utf-8")
+        .expect(/TODO APP/)
+        .end(handleError(done))
     })
 
     it('should give user\'s home page for a logged in user', done => {
-      request(app, {
-        method: 'GET',
-        url: '/login',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai"
-        }
-      }, res => {
-        th.should_be_redirected_to(res, 'home');
-        done();
-      })
+      request(app)
+        .get('/login')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai')
+        .expect(302)
+        .expect('Location', 'home')
+        .end(handleError(done));
     })
   })
 
   describe('GET /image/todo.jpg', () => {
     it('serves the image', done => {
-      request(app, {
-        method: 'GET',
-        url: '/image/todo.jpg'
-      }, res => {
-        th.status_is_ok(res);
-        th.content_type_is(res, 'image/jpg');
-        done();
-      })
-    })
-  })
-
-  describe('GET /script/showTodoList.js', () => {
-    it('serves the list of todo page', done => {
-      request(app, {
-        method: 'GET',
-        url: '/script/showTodoList.js',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai"
-        }
-      }, res => {
-        th.status_is_ok(res);
-        th.content_type_is(res, 'text/js');
-        th.body_contains(res, 'getAllTodo');
-        done();
-      })
-    })
-  })
-  describe('GET /loginPage.html', () => {
-    it('serves the login page', done => {
-      request(app, {
-        method: 'GET',
-        url: '/login'
-      }, res => {
-        th.status_is_ok(res);
-        th.body_contains(res, 'Name :');
-        done();
-      })
+      request(app)
+        .get('/image/todo.jpg')
+        .expect(200)
+        .expect('Content-Type', "image/jpeg")
+        .end(handleError(done))
     })
   })
 
   describe('POST /login', () => {
-    it('redirects to loginPage for valid user', done => {
-      request(app, {
-          method: 'POST',
-          url: '/login',
-          body: 'userName=ankurrai&password=ankur'
-        },
-        res => {
-          th.should_be_redirected_to(res, 'home');
-          th.should_not_have_cookie(res, 'message');
-          done();
-        })
+    it('redirects to userHome for valid user', done => {
+      request(app)
+        .post('/login')
+        .send('userName=ankurrai&password=ankur')
+        .expect(302)
+        .expect('Location', 'home')
+        .expect('set-cookie', /user=ankurrai/)
+        .end(handleError(done));
     })
     it('redirects to login.html with message for invalid user', done => {
-      request(app, {
-        method: 'POST',
-        url: '/login',
-        body: 'username=badUser'
-      }, res => {
-        th.should_be_redirected_to(res, 'login');
-        th.should_have_expiring_cookie(res, 'message', 'login failed');
-        done();
-      })
+      request(app)
+        .post('/login')
+        .send('userName=ankurraiiiii&password=ankur')
+        .expect(302)
+        .expect('Location', 'login')
+        .expect('set-cookie', 'message=login failed; Max-Age=5')
+        .end(handleError(done));
     })
   })
 
   describe('GET /logout', function() {
     it('it should redirect user to login and delete cookies', done => {
-      request(app, {
-        method: 'GET',
-        url: '/logout',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai"
-        }
-      }, res => {
-        th.should_be_redirected_to(res, 'login');
-        th.should_not_have_cookie(res, 'user');
-        th.should_not_have_cookie(res, 'sessionid');
-        done();
-      })
+      request(app)
+        .get('/logout')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai')
+        .expect(302)
+        .expect('Location', 'login')
+        .expect('set-cookie', "sessionid=0; Max-Age=0,user=''; Max-Age=0")
+        .end(handleError(done));
     })
   })
   describe('GET unpermitted files', function() {
     it('should not allow unlogged user to access unpermitted files', done => {
-      request(app, {
-        method: 'GET',
-        url: '/home.html',
-      }, res => {
-        th.should_be_redirected_to(res, 'login');
-        th.should_have_expiring_cookie(res, 'message', 'Kindly login for more access');
-        done();
-      })
+      request(app)
+        .get('/todo.html')
+        .expect('set-cookie', "message=Kindly login for more access; Max-Age=5")
+        .expect(302)
+        .expect('Location', 'login')
+        .end(handleError(done));
     })
   })
 
   describe('POST /addTodo', function() {
     it('should redirect user to viewing(userHome) page', done => {
-      request(app, {
-        method: 'POST',
-        url: '/addTodo',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai"
-        }
-      }, res => {
-        th.should_be_redirected_to(res, 'home');
-        done();
-      })
+      request(app)
+        .post('/addTodo')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai')
+        .expect(302)
+        .expect('Location', 'home')
+        .end(handleError(done));
     })
   })
 
   describe('GET /home', function() {
-    it('should give users home for logged in user', done => {
-      request(app, {
-        method: 'GET',
-        url: '/home',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai"
-        }
-      }, res => {
-        th.status_is_ok(res);
-        th.content_type_is(res, 'text/html');
-        th.body_contains(res, 'User Home');
-        done();
-      })
+    it('should get home', done => {
+      request(app)
+        .get('/home')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai')
+        .expect(200)
+        .expect(/Welcome ankurrai/)
+        .end(handleError(done));
     })
   })
 
   describe('POST /editTodo', function() {
     it('should redirect the user to home ', done => {
-      request(app, {
-        method: 'POST',
-        url: '/editTodo',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai; todoId=1;"
-        },
-        body: 'title=new&description=todo'
-      }, res => {
-        th.should_have_cookie(res, 'todoId', '0');
-        th.should_be_redirected_to(res, 'home');
-        done();
-      })
+      request(app)
+        .post('/editTodo')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai; todoId=1')
+        .send('title=hi&description=hello')
+        .expect(302)
+        .expect('Location', 'home')
+        .expect('set-cookie', "todoId=0; Max-Age=0")
+        .end(handleError(done));
     })
   })
   describe('GET /createNewTodo', function() {
     it('should give page to create new todo ', done => {
-      request(app, {
-        method: 'GET',
-        url: '/createNewTodo',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai; "
-        }
-      }, res => {
-        th.status_is_ok(res);
-        th.content_type_is(res, 'text/html');
-        th.body_contains(res, 'write your todo');
-        done();
-      })
+      request(app)
+        .get('/createNewTodo')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai;')
+        .expect(200)
+        .expect('Content-Type', "text/html; charset=utf-8")
+        .expect(/write your todo/)
+        .end(handleError(done))
     })
   })
   describe('GET /userTodos', function() {
     it('should give userTodos', done => {
-      request(app, {
-        method: 'GET',
-        url: '/userTodos',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai; "
-        }
-      }, res => {
-        th.status_is_ok(res);
-        th.content_type_is(res, 'text/plain');
-        th.body_contains(res, 'todo');
-        done();
-      })
+      request(app)
+        .get('/userTodos')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai')
+        .expect(200)
+        .expect('Content-Type', "text/plain; charset=utf-8")
+        .expect(/description/)
+        .end(handleError(done))
     })
   })
 
-  describe('POST /deleteTodo',function () {
-    it('should have a status of 201',done => {
-      request(app, {
-        method: 'POST',
-        url: '/deleteTodo',
-        headers: {
-          cookie: "sessionid=1516430776870; user=ankurrai; "
-        }
-      }, res => {
-        th.statusCode_is_created(res);
-        done();
-      })
+  describe('POST /deleteTodo', function() {
+    it('should have a status of 201', done => {
+      request(app)
+        .post('/deleteTodo')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai')
+        .send('todoId=1')
+        .expect(201)
+        .end(handleError(done));
+    })
+  })
+
+  describe('POST /viewItems', function() {
+    it('should serve items', done => {
+      request(app)
+        .post('/viewItems')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai')
+        .send('todoId=1')
+        .expect(200)
+        .expect('')
+        .end(handleError(done));
     })
   })
 })
