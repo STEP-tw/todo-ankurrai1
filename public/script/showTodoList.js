@@ -12,10 +12,6 @@ let deleteTodo = function(index, todoId) {
   createRequest(()=>{}, "deleteTodo", `todoId=${todoId}`, 'POST');
 };
 
-let showTodo = function() {
-  alert(this.responseText)
-};
-
 let showTodoList = function() {
   let todos = JSON.parse(this.responseText);
   let todoDiv = document.getElementById('todos');

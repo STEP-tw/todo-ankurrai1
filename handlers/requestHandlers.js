@@ -1,6 +1,7 @@
 const fs = require('fs');
 const lib = require('./helperLib.js');
 const Todo = require('../models/todo.js');
+const Item = require('../models/item.js');
 const Counter = require('../models/counter.js').Counter;
 const usersRepoPath = lib.getUsersRepoPath();
 var usersData = lib.fromJSON(lib.getFileContents(usersRepoPath));
@@ -74,8 +75,7 @@ const addTodo = function(req, res) {
   let user = lib.getUserWithBehaviour(usersData,req);
   let title = lib.getTitle(req);
   let description = lib.getDescription(req);
-  let idCounter = new Counter(user.todoCount);
-  let todo = new Todo(idCounter.increment(), title, description);
+  let todo = new Todo(lib.generateId(user.todoCount), title, description);
   user.addTodo(todo);
   let userPosition = usersData.findIndex(everyUser => user.id == everyUser.id);
   lib.updateData(usersData,usersRepoPath);
@@ -105,8 +105,20 @@ const deleteTodo = function (req,res) {
 
 const viewItems = function (req,res) {
   let user = lib.getUserWithBehaviour(usersData,req);
-  let todo = user.fetchTodo(lib.getTodoId(req));
+  let todoId = lib.getTodoId(req);
+  let todo = user.fetchTodo(todoId);
+  res.set('Set-Cookie', `todoId=${todoId}`);
   res.send(lib.toJsonString(todo));
+}
+const addItem=function (req,res) {
+  let user = lib.getUserWithBehaviour(usersData,req);
+  let todo = user.fetchTodo(lib.getTodoId(req));
+  todo = lib.retriveBehaviour(Todo,todo);
+  let item = new Item(lib.generateId(todo.itemCount),req.body.item);
+  todo.addItem(item);
+  user.replaceTodo(todo);
+  lib.updateData(usersData,usersRepoPath);
+  viewItems(req,res);
 }
 
 const logoutUser = function(req, res) {
@@ -127,5 +139,6 @@ module.exports = {
   editTodo,
   deleteTodo,
   viewItems,
-  respondWith404
+  respondWith404,
+  addItem
 }

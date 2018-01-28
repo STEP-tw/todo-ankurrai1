@@ -66,5 +66,8 @@ class Todo{
     return this.items;
   }
 
+  get itemCount() {
+    return this.items.length + this.deletedItems.length;
+  }
 }
 module.exports=Todo;

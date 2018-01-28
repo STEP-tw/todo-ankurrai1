@@ -76,7 +76,7 @@ const getDescription = function(req) {
 };
 
 const getTodoId = function (req) {
-  return req.body.todoId;
+  return req.body.todoId || getCookie(req,'todoId');
 }
 const toJsonString = o => JSON.stringify(o, null, 2);
 
@@ -124,6 +124,10 @@ const fileExists = function (fs,url) {
   return fs.existsSync('./public' + url);
 };
 
+const generateId = function (initialCount) {
+  let idCounter = new Counter(initialCount);
+  return idCounter.increment();
+}
 module.exports = {
   getUserName,
   getPassword,
@@ -148,5 +152,6 @@ module.exports = {
   getFilePath,
   replacePageContent,
   urlIsOneOf,
-  fileExists
+  fileExists,
+  generateId
 }

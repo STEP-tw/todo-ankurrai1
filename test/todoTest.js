@@ -117,4 +117,10 @@ describe('Todo',()=>{
       assert.equal(todo.getDescription(),"description");
     })
   })
+
+  describe('get itemCount',function () {
+    it('should give the total no of items the todo holds',function () {
+      assert.equal(todo.itemCount,1);
+    })
+  })
 })

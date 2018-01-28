@@ -266,4 +266,10 @@ describe('HelperLib', function() {
       assert.isFalse(lib.urlIsOneOf(urls, 'url'));
     })
   })
+
+  describe('generateId',function () {
+    it('should generateId given an initialValue',function () {
+      assert.equal(lib.generateId(2),3);
+    })
+  })
 })
