@@ -62,7 +62,7 @@ const getCookie = function(req, cookieName) {
   return req.cookies[`${cookieName}`] || req.cookies[` ${cookieName}`];
 };
 
-const retriveBehaviour = function(classObj, jsonObj) {
+const retriveBehaviour = function(classObj, jsonObj={}) {
   return obj = new classObj(...Object.values(jsonObj));
 };
 

@@ -11,6 +11,10 @@ let deleteTodo = function(index, todoId) {
   event.target.parentElement.parentElement.remove();
   createRequest(()=>{}, "deleteTodo", `todoId=${todoId}`, 'POST');
 };
+let deleteItem = function(index, itemId) {
+  event.target.parentElement.remove();
+  createRequest(()=>{}, "deleteItem", `itemId=${itemId}`, 'POST');
+};
 
 let showTodoList = function() {
   let todos = JSON.parse(this.responseText);

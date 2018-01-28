@@ -1,6 +1,5 @@
 #innerlayer {
   width: 90%;
-  height: 100%;
   font-family: sans-serif;
   margin: 3% auto;
 }
@@ -74,12 +73,14 @@ a {
 .leftMenu {
   float: left;
   width: 25%;
+  height: 600px;
   padding-left: 35px;
-  padding-top: 50px;
   border-right: 3px solid gray;
   background-color: #fafafa;
 }
 .rightMenu {
   width: 70%;
+  height: 70%;
   float: right;
+  overflow: scroll;
 }

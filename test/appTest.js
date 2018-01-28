@@ -188,4 +188,28 @@ describe('app', () => {
         .end(handleError(done));
     })
   })
+
+  describe('POST /addItem', function() {
+    it('should save item', done => {
+      request(app)
+        .post('/addItem')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai; todoId=1')
+        .send('item=text')
+        .expect(200)
+        .expect('')
+        .end(handleError(done));
+    })
+  })
+
+  describe('POST /deleteItem', function() {
+    it('should have a status of 201', done => {
+      request(app)
+        .post('/deleteItem')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai')
+        .send('itemId=1')
+        .expect('Created')
+        .expect(201)
+        .end(handleError(done));
+    })
+  })
 })

@@ -20,7 +20,8 @@ app.post('/editTodo',handlersLib.editTodo);
 app.post('/deleteTodo',handlersLib.deleteTodo);
 app.post('/viewItems',handlersLib.viewItems);
 app.get("/logout",handlersLib.logoutUser);
-app.post('/addItem',handlersLib.addItem)
+app.post('/addItem',handlersLib.addItem);
+app.post('/deleteItem',handlersLib.deleteItems);
 
 app.use(express.static('public'));
 app.use(handlersLib.respondWith404);

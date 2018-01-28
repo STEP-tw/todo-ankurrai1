@@ -5,123 +5,30 @@
     "todoList": [
       {
         "id": 1,
-        "title": "1st edit",
-        "description": "edited",
+        "title": "1st",
+        "description": "todo1",
         "items": [
-          {
-            "text": "hello"
-          },
-          {
-            "text": "hi"
-          },
-          {
-            "id": 3,
-            "done": false
-          },
-          {
-            "id": 4,
-            "done": false
-          },
-          {
-            "id": 5,
-            "done": false
-          },
-          {
-            "id": 6,
-            "done": false
-          },
-          {
-            "id": 7,
-            "done": false
-          },
-          {
-            "id": 8,
-            "text": "dont show undefined",
-            "done": false
-          },
-          {
-            "id": 9,
-            "text": "hello",
-            "done": false
-          },
-          {
-            "id": 10,
-            "text": "[object MouseEvent]",
-            "done": false
-          },
-          {
-            "id": 11,
-            "text": "[object MouseEvent]",
-            "done": false
-          },
-          {
-            "id": 12,
-            "text": "[object MouseEvent]",
-            "done": false
-          },
-          {
-            "id": 13,
-            "text": "hello",
-            "done": false
-          },
-          {
-            "id": 14,
-            "text": "hello",
-            "done": false
-          },
-          {
-            "id": 15,
-            "text": "hii",
-            "done": false
-          },
-          {
-            "id": 16,
-            "text": "hello",
-            "done": false
-          },
-          {
-            "id": 17,
-            "text": "hellouytui",
-            "done": false
-          },
-          {
-            "id": 18,
-            "text": "hellosertre",
-            "done": false
-          }
         ],
-        "deletedItems": []
+        "deletedItems": [
+        ]
+      },
+      {
+        "id": 2,
+        "title": "2nd",
+        "description": "todo2",
+        "items": [
+        ],
+        "deletedItems": [
+        ]
       },
       {
         "id": 3,
-        "title": "3rd todo",
-        "description": "im can be deleted",
-        "items": [],
-        "deletedItems": []
-      },
-      {
-        "id": 4,
-        "title": "im no4 ",
-        "description": "if you want check in the console",
-        "items": [],
-        "deletedItems": []
-      },
-      {
-        "id": 5,
-        "title": "hii",
-        "description": "ehll",
+        "title": "3rd",
+        "description": "todo3",
         "items": [],
         "deletedItems": []
       }
     ],
-    "deletedTodos": [
-      {
-        "id": 2,
-        "title": "2nd",
-        "description": "hello",
-        "items": [],
-        "deletedItems": []
-      }
-    ]
+    "deletedTodos": []
   }
 ]

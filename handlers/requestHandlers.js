@@ -121,6 +121,17 @@ const addItem=function (req,res) {
   viewItems(req,res);
 }
 
+const deleteItems=function (req,res) {
+  let user = lib.getUserWithBehaviour(usersData,req);
+  let todo = user.fetchTodo(lib.getTodoId(req));
+  todo = lib.retriveBehaviour(Todo,todo);
+  todo.deleteItem(req.body.itemId);
+  user.replaceTodo(todo);
+  lib.updateData(usersData,usersRepoPath);
+  res.sendStatus(201);
+  res.end();
+}
+
 const logoutUser = function(req, res) {
   res.set('Set-Cookie', [`sessionid=0; Max-Age=0`, `user=''; Max-Age=0`]);
   res.redirect('login');
@@ -140,5 +151,6 @@ module.exports = {
   deleteTodo,
   viewItems,
   respondWith404,
-  addItem
+  addItem,
+  deleteItems
 }

@@ -58,13 +58,12 @@ function getDeleteButton(index, id, callBack) {
 function displayEachItem(item, index) {
   let itemsList = document.getElementById('itemsList');
   let list = document.createElement('li');
-  let itemText = item.text;
+  let itemText = item.text + getDeleteButton(index, item.id, 'deleteItem');
   list.innerHTML = itemText;
   itemsList.appendChild(list);
 }
 
 function showItems() {
-  console.log(this.responseText);
   let todo = JSON.parse(this.responseText);
   let rightMenu = document.getElementById('rightMenuTitle');
   let todoTitle = getTitle(todo);
