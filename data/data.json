@@ -5,21 +5,33 @@
     "todoList": [
       {
         "id": 1,
-        "title": "1st",
-        "description": "todo1",
+        "title": "gu",
+        "description": "jkg",
         "items": [
+          {
+            "id": 1,
+            "text": "hello",
+            "done": false
+          },
+          {
+            "id": 2,
+            "text": "hiui",
+            "done": false
+          },
+          {
+            "id": 3,
+            "text": "hello",
+            "done": false
+          }
         ],
-        "deletedItems": [
-        ]
+        "deletedItems": []
       },
       {
         "id": 2,
         "title": "2nd",
         "description": "todo2",
-        "items": [
-        ],
-        "deletedItems": [
-        ]
+        "items": [],
+        "deletedItems": []
       },
       {
         "id": 3,

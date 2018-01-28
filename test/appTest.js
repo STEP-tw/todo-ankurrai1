@@ -212,4 +212,16 @@ describe('app', () => {
         .end(handleError(done));
     })
   })
+
+  describe('POST /editItem', function() {
+    it('should edit given item', done => {
+      request(app)
+        .post('/editItem')
+        .set('Cookie', 'sessionid=1516430776870; user=ankurrai; todoId=1')
+        .send('item=text&itemId=1')
+        .expect(200)
+        .expect('')
+        .end(handleError(done));
+    })
+  })
 })

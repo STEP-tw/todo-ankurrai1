@@ -22,6 +22,7 @@ app.post('/viewItems',handlersLib.viewItems);
 app.get("/logout",handlersLib.logoutUser);
 app.post('/addItem',handlersLib.addItem);
 app.post('/deleteItem',handlersLib.deleteItems);
+app.post('/editItem',handlersLib.editItem)
 
 app.use(express.static('public'));
 app.use(handlersLib.respondWith404);

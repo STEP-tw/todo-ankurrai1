@@ -121,6 +121,16 @@ const addItem=function (req,res) {
   viewItems(req,res);
 }
 
+const editItem=function (req,res) {
+  let user = lib.getUserWithBehaviour(usersData,req);
+  let todo = user.fetchTodo(lib.getTodoId(req));
+  todo = lib.retriveBehaviour(Todo,todo);
+  todo.editItem(req.body.itemId,req.body.item);
+  user.replaceTodo(todo);
+  lib.updateData(usersData,usersRepoPath);
+  viewItems(req,res);
+};
+
 const deleteItems=function (req,res) {
   let user = lib.getUserWithBehaviour(usersData,req);
   let todo = user.fetchTodo(lib.getTodoId(req));
@@ -152,5 +162,6 @@ module.exports = {
   viewItems,
   respondWith404,
   addItem,
-  deleteItems
+  deleteItems,
+  editItem
 }

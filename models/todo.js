@@ -1,4 +1,9 @@
+const Item = require('./item.js');
 let isIndex = type => type == 'index';
+
+const retriveBehaviour = function(classObj, jsonObj={}) {
+  return obj = new classObj(...Object.values(jsonObj));
+};
 
 let fetch = function(todoList, todoId, type='todo') {
   if (isIndex(type)) {
@@ -38,7 +43,11 @@ class Todo{
 
   editItem(id,text) {
     let item=fetch(this.items,id);
+    item = retriveBehaviour(Item,item);
     item.changeText(text);
+    let position=fetch(this.items,id,'index');
+    console.log('--------',position,'*********',item);
+    this.items[position]=item;
   }
 
   getItemStatus(id) {

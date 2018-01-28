@@ -13,6 +13,7 @@ function getResetButton() {
 function getCancelButton() {
   return '<button type="button" name="cancel" onclick="disappear()">cancel</button>';
 }
+
 function edit(index, id) {
   document.cookie = `todoId=${id}`;
   let contents = `
@@ -28,8 +29,8 @@ function edit(index, id) {
   </form>`;
 
   let todoBlock = document.getElementsByClassName('todoBlock');
-  let uniqueDiv = document.getElementById('unique');
-  if (uniqueDiv) {
+  let editButton = document.getElementById('unique');
+  if (editButton) {
     return;
   }
   let newdiv = document.createElement('div');
@@ -37,6 +38,25 @@ function edit(index, id) {
   newdiv.innerHTML = contents;
   todoBlock[index].appendChild(newdiv);
 }
+
+function editItem(index, id) {
+  let itemBox = getItemBox('edit');
+  let item = document.getElementById(id);
+  let edit = document.getElementById('uniqueEdit');
+  if (edit) {
+    return;
+  }
+  let newdiv = document.createElement('div');
+  newdiv.setAttribute("id", "uniqueEdit");
+  newdiv.innerHTML = itemBox;
+  let itemBoxDiv = document.createElement('div');
+  newdiv.childNodes[3].onclick = function() {
+    let itemText = newdiv.firstElementChild.value;
+    saveItem(`${itemText}&itemId=${id}`,'editItem');
+  }
+  itemBoxDiv.appendChild(newdiv);
+  item.appendChild(itemBoxDiv);
+};
 
 function getTitle(todo) {
   return ` ${todo.title}`;
@@ -58,7 +78,9 @@ function getDeleteButton(index, id, callBack) {
 function displayEachItem(item, index) {
   let itemsList = document.getElementById('itemsList');
   let list = document.createElement('li');
-  let itemText = item.text + getDeleteButton(index, item.id, 'deleteItem');
+  list.id = item.id;
+  let itemText = item.text + getEditButton(index, item.id, 'editItem') +
+    getDeleteButton(index, item.id, 'deleteItem');
   list.innerHTML = itemText;
   itemsList.appendChild(list);
 }
@@ -93,31 +115,32 @@ function displayTitleWithDesc(todo, index) {
   </details>`
 }
 
-function getItemBox() {
+function getItemBox(action) {
   return `
-  <input type="text" name="item" value="hello">
-  ${getSubmitButton('addItem')}
+  <input type="text" name="item" value="">
+  ${getSubmitButton(action)}
   ${getResetButton()}
   ${getCancelButton()}
   `;
 }
-function saveItem(itemText) {
-  console.log(itemText,'***************');
-  createRequest(showItems,'addItem',`item=${itemText}`,'POST');
+
+function saveItem(itemText, requestUrl) {
+  createRequest(showItems, requestUrl, `item=${itemText}`, 'POST');
 };
+
 function getNewItemBox() {
   if (document.getElementById('itemBox')) {
-    return ;
+    return;
   }
   let orderedList = document.getElementById('itemsList');
   let addItem = document.createElement('div');
-  addItem.setAttribute('id','itemBox');
+  addItem.setAttribute('id', 'itemBox');
   let addItemContents = document.createElement('div');
-  addItemContents.id="itemBoxContents";
-  addItemContents.innerHTML = getItemBox();
-  addItemContents.childNodes[3].onclick=function () {
-    let itemText=addItemContents.firstElementChild.value;
-  saveItem(itemText);
+  addItemContents.id = "itemBoxContents";
+  addItemContents.innerHTML = getItemBox('addItem');
+  addItemContents.childNodes[3].onclick = function() {
+    let itemText = addItemContents.firstElementChild.value;
+    saveItem(itemText, 'addItem');
   }
   addItem.appendChild(addItemContents);
   orderedList.appendChild(addItem);
