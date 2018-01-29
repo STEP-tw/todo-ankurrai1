@@ -66,6 +66,13 @@ describe('Todo',()=>{
       assert.propertyVal(todo,'description',expected);
     })
   })
+  describe('replaceItem',()=>{
+    it('should replace item with new one of same id',()=>{
+      let newItem=new Item(1,'new text');
+      todo.replaceItem(newItem);
+      assert.deepEqual(todo.items[0],newItem);
+    })
+  })
   describe('add new item',()=>{
     it('should add new item in items',()=>{
       todo.addItem(item);

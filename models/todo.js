@@ -37,6 +37,11 @@ class Todo{
     this.description = newDescription;
   }
 
+  replaceItem(item){
+    let position=fetch(this.items,item.id,'index');
+    this.items[position]=item;
+  }
+
   addItem(item) {
     this.items.push(item);
   }
@@ -45,9 +50,7 @@ class Todo{
     let item=fetch(this.items,id);
     item = retriveBehaviour(Item,item);
     item.changeText(text);
-    let position=fetch(this.items,id,'index');
-    console.log('--------',position,'*********',item);
-    this.items[position]=item;
+    this.replaceItem(item);
   }
 
   getItemStatus(id) {
@@ -57,12 +60,16 @@ class Todo{
 
   markItemAsDone(id) {
     let item=fetch(this.items,id);
-    return item.markAsDone();
+    item = retriveBehaviour(Item,item);
+    item.markAsDone();
+    this.replaceItem(item);
   }
 
   markItemAsUndone(id) {
     let item=fetch(this.items,id);
+    item = retriveBehaviour(Item,item);
     item.markAsNotDone();
+    this.replaceItem(item);
   }
 
   deleteItem(id) {

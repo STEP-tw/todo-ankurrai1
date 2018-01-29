@@ -74,12 +74,28 @@ function getDeleteButton(index, id, callBack) {
   return `<input type="button" onclick="${callBack}(${index},${id})" value="Delete">`;
 }
 
+function updateStatusDone(id) {
+  createRequest(()=>{},'markItemDone',`itemId=${id}`,'POST');
+}
+
+function updateStatusUndone(id) {
+  createRequest(()=>{},'markItemUndone',`itemId=${id}`,'POST');
+}
+
+function getCheckBox(id,status) {
+  let checkedBox = `
+  <input id=${id} type="checkbox" name="checkBox" value="" onclick="updateStatusUndone(${id})" checked>`
+  let uncheckedBox = `
+  <input id=${id} type="checkbox" name="checkBox" value="" onclick="updateStatusDone(${id})">`
+
+  return status ? checkedBox : uncheckedBox;
+}
 
 function displayEachItem(item, index) {
   let itemsList = document.getElementById('itemsList');
   let list = document.createElement('li');
   list.id = item.id;
-  let itemText = item.text + getEditButton(index, item.id, 'editItem') +
+  let itemText = getCheckBox(item.id,item.done)+ item.text + getEditButton(index, item.id, 'editItem') +
     getDeleteButton(index, item.id, 'deleteItem');
   list.innerHTML = itemText;
   itemsList.appendChild(list);
@@ -144,5 +160,4 @@ function getNewItemBox() {
   }
   addItem.appendChild(addItemContents);
   orderedList.appendChild(addItem);
-
 }

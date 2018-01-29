@@ -77,6 +77,10 @@ const getDescription = function(req) {
 
 const getTodoId = function (req) {
   return req.body.todoId || getCookie(req,'todoId');
+};
+
+const getItemId = function (req) {
+  return req.body.itemId;
 }
 const toJsonString = o => JSON.stringify(o, null, 2);
 
@@ -153,5 +157,6 @@ module.exports = {
   replacePageContent,
   urlIsOneOf,
   fileExists,
-  generateId
+  generateId,
+  getItemId
 }

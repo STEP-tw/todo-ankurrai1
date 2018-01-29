@@ -224,4 +224,28 @@ describe('app', () => {
         .end(handleError(done));
     })
   })
+
+  describe('POST /markItemUndone', function() {
+    it('should mark given item status as done', done => {
+      request(app)
+      .post('/markItemUndone')
+      .set('Cookie', 'sessionid=1516430776870; user=ankurrai; todoId=1')
+      .send('itemId=1')
+      .expect(201)
+      .expect('Created')
+      .end(handleError(done));
+    })
+  })
+
+  describe('POST /markItemDone', function() {
+    it('should mark given item status as done', done => {
+      request(app)
+      .post('/markItemDone')
+      .set('Cookie', 'sessionid=1516430776870; user=ankurrai; todoId=1')
+      .send('itemId=1')
+      .expect(201)
+      .expect('Created')
+      .end(handleError(done));
+    })
+  })
 })

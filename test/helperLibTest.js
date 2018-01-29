@@ -126,12 +126,25 @@ describe('HelperLib', function() {
   describe('get todoId', function() {
     it('should get todo\'s id', function() {
       let id = "todoID";
-      let user = {
+      let req = {
         body: {
           todoId: id
         }
       };
-      let actual = lib.getTodoId(user);
+      let actual = lib.getTodoId(req);
+      assert.equal(actual, id);
+    })
+  })
+
+  describe('get itemId', function() {
+    it('should get item\'s id', function() {
+      let id = "itemID";
+      let req = {
+        body: {
+          itemId: id
+        }
+      };
+      let actual = lib.getItemId(req);
       assert.equal(actual, id);
     })
   })
