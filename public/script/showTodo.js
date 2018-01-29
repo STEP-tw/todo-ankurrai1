@@ -66,12 +66,16 @@ function getDescription(todo) {
   return `<p class="desc" >${todo.description}</p>`;
 }
 
-function getEditButton(index, id, callBack) {
-  return `<input type="button" onclick="${callBack}(${index},${id})" name="edit" value="edit">`;
+function getEditButton(index, id, callBack,visibility) {
+  return `<input id="${id}"  style="visibility:${visibility}"
+  type="button" onclick="${callBack}(${index},${id})"
+  name="edit" value="edit">`;
 }
 
-function getDeleteButton(index, id, callBack) {
-  return `<input type="button" onclick="${callBack}(${index},${id})" value="Delete">`;
+function getDeleteButton(index, id, callBack,visibility) {
+  return `<input id="${id}"  style="visibility:${visibility}"
+  type="button" onclick="${callBack}(${index},${id})"
+  value="Delete">`;
 }
 
 function updateStatusDone(id) {
@@ -91,13 +95,33 @@ function getCheckBox(id,status) {
   return status ? checkedBox : uncheckedBox;
 }
 
+function showOptions(list) {
+  let editButton = list.childNodes[3];
+  let deleteButton = list.childNodes[4];
+  editButton.style.visibility = 'visible';
+  deleteButton.style.visibility = 'visible';
+}
+
+function hideOptions(list) {
+  let editButton = list.childNodes[3];
+  let deleteButton = list.childNodes[4];
+  editButton.style.visibility = 'hidden';
+  deleteButton.style.visibility = 'hidden';
+}
 function displayEachItem(item, index) {
   let itemsList = document.getElementById('itemsList');
   let list = document.createElement('li');
-  list.id = item.id;
-  let itemText = getCheckBox(item.id,item.done)+ item.text + getEditButton(index, item.id, 'editItem') +
-    getDeleteButton(index, item.id, 'deleteItem');
+  let itemId = item.id;
+  list.id = itemId;
+  let itemText = getCheckBox(itemId,item.done)+ item.text + getEditButton(index, itemId, 'editItem','hidden') +
+    getDeleteButton(index, itemId, 'deleteItem','hidden');
   list.innerHTML = itemText;
+  list.onmouseover = function () {
+    showOptions(list)
+  }
+  list.onmouseout = function () {
+    hideOptions(list)
+  };
   itemsList.appendChild(list);
 }
 
@@ -126,12 +150,13 @@ function displayTitleWithDesc(todo, index) {
   <details class="todoBlock">
   <summary><span class="title" onclick=displayItems(${id})>${getTitle(todo)}</span></summary>
   ${getDescription(todo)}
-  ${getEditButton(index,id,'edit')}
-  ${getDeleteButton(index,id,'deleteTodo')}
+  ${getEditButton(index,id,'edit','visible')}
+  ${getDeleteButton(index,id,'deleteTodo','visible')}
   </details>`
 }
 
 function getItemBox(action) {
+  console.log('im here');
   return `
   <input type="text" name="item" value="">
   ${getSubmitButton(action)}
