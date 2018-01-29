@@ -5,87 +5,73 @@
     "todoList": [
       {
         "id": 1,
-        "title": "gu",
-        "description": "jkg",
-        "items": [
-          {
-            "id": 8,
-            "text": "i m edited ltem",
-            "done": false
-          },
-          {
-            "id": 9,
-            "text": "fsdfsfdsf",
-            "done": false
-          }
-        ],
+        "title": "1st todo",
+        "description": "somthing",
+        "items": [],
         "deletedItems": [
           {
-            "id": 2,
-            "text": "hiui",
-            "done": false
-          },
-          {
             "id": 1,
-            "text": "hello",
+            "text": "1st item",
             "done": false
           },
           {
-            "id": 5,
-            "text": "hi",
+            "id": 2,
+            "text": "2nd item",
             "done": false
           },
           {
             "id": 3,
-            "text": "hello",
+            "text": "third item",
             "done": false
           },
           {
             "id": 6,
-            "text": "fsdfsdf",
+            "text": "3",
             "done": false
           },
           {
-            "id": 7,
-            "text": "fsdfsdf",
+            "id": 5,
+            "text": "2",
             "done": false
           },
           {
             "id": 4,
-            "text": "hello",
+            "text": "1",
             "done": false
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "title": "2nd",
-        "description": "todo2",
-        "items": [],
-        "deletedItems": []
-      },
-      {
-        "id": 3,
-        "title": "3rd",
-        "description": "todo3",
-        "items": [],
-        "deletedItems": []
-      },
-      {
-        "id": 4,
-        "title": "harvar",
-        "description": "he is an idiot",
-        "items": [
+          },
           {
-            "id": 2,
-            "text": "somthing",
-            "done": true
-          }
-        ],
-        "deletedItems": [
+            "id": 7,
+            "text": "get deleted person",
+            "done": false
+          },
           {
-            "id": 1,
-            "text": "edit me",
+            "id": 8,
+            "text": "fsdf",
+            "done": false
+          },
+          {
+            "id": 9,
+            "text": "fsdf",
+            "done": false
+          },
+          {
+            "id": 10,
+            "text": "fsdf",
+            "done": false
+          },
+          {
+            "id": 12,
+            "text": "fsdf",
+            "done": false
+          },
+          {
+            "id": 11,
+            "text": "sdfs",
+            "done": false
+          },
+          {
+            "id": 13,
+            "text": "fsdf",
             "done": false
           }
         ]

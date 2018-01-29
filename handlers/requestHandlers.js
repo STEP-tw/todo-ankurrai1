@@ -143,10 +143,12 @@ const deleteItems = function(req, res) {
 }
 
 const markItemUndone = function(req, res) {
+  console.log('------------------------hello im undone');
   let user = lib.getUserWithBehaviour(usersData, req);
   let todo = user.fetchTodo(lib.getTodoId(req));
   todo = lib.retriveBehaviour(Todo, todo);
   todo.markItemAsUndone(lib.getItemId(req));
+  console.log('---------------imhere',todo.items);
   user.replaceTodo(todo);
   lib.updateData(usersData, usersRepoPath);
   res.sendStatus(201);
@@ -154,6 +156,7 @@ const markItemUndone = function(req, res) {
 };
 
 const markItemDone=function (req,res) {
+  console.log('hello---------------im done');
   let user = lib.getUserWithBehaviour(usersData, req);
   let todo = user.fetchTodo(lib.getTodoId(req));
   todo = lib.retriveBehaviour(Todo, todo);

@@ -80,10 +80,12 @@ function getDeleteButton(index, id, callBack,visibility) {
 
 function updateStatusDone(id) {
   createRequest(()=>{},'markItemDone',`itemId=${id}`,'POST');
+  displayItems(document.cookie.charAt(7));
 }
 
 function updateStatusUndone(id) {
   createRequest(()=>{},'markItemUndone',`itemId=${id}`,'POST');
+  displayItems(document.cookie.charAt(7));
 }
 
 function getCheckBox(id,status) {
@@ -96,25 +98,40 @@ function getCheckBox(id,status) {
 }
 
 function showOptions(list) {
-  let editButton = list.childNodes[3];
-  let deleteButton = list.childNodes[4];
+  let editButton = list.lastChild.previousSibling;
+  let deleteButton = list.lastChild;
   editButton.style.visibility = 'visible';
   deleteButton.style.visibility = 'visible';
 }
 
 function hideOptions(list) {
-  let editButton = list.childNodes[3];
-  let deleteButton = list.childNodes[4];
+  let editButton = list.lastChild.previousSibling;
+  let deleteButton = list.lastChild;
   editButton.style.visibility = 'hidden';
   deleteButton.style.visibility = 'hidden';
+}
+
+function getTimeStamp() {
+  let date = new Date;
+  let humanReadableDate = date.toDateString();
+  let humanReadableTime = date.toLocaleTimeString();
+  return `${humanReadableDate} ${humanReadableTime}`;
+};
+function getItemText(text,status) {
+  let strikedText = `
+  <strike>${text}</strike> ${getTimeStamp()}
+  `
+  return status ? strikedText : text;
 }
 function displayEachItem(item, index) {
   let itemsList = document.getElementById('itemsList');
   let list = document.createElement('li');
   let itemId = item.id;
   list.id = itemId;
-  let itemText = getCheckBox(itemId,item.done)+ item.text + getEditButton(index, itemId, 'editItem','hidden') +
-    getDeleteButton(index, itemId, 'deleteItem','hidden');
+  let itemText = getCheckBox(itemId,item.done) +
+  getItemText(item.text,item.done) +
+  getEditButton(index, itemId, 'editItem','hidden') +
+  getDeleteButton(index, itemId, 'deleteItem','hidden');
   list.innerHTML = itemText;
   list.onmouseover = function () {
     showOptions(list)
@@ -156,7 +173,6 @@ function displayTitleWithDesc(todo, index) {
 }
 
 function getItemBox(action) {
-  console.log('im here');
   return `
   <input type="text" name="item" value="">
   ${getSubmitButton(action)}
