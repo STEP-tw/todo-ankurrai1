@@ -15,7 +15,6 @@ function getCancelButton() {
 }
 
 function edit(index, id) {
-  document.cookie = `todoId=${id}`;
   let contents = `
   <form id="unique" method="post" action="/editTodo">
     <p class="edit">edit title:</p>
@@ -78,14 +77,18 @@ function getDeleteButton(index, id, callBack,visibility) {
   value="Delete">`;
 }
 
+function fetchTodoId(cookie) {
+  let str = cookie.split(" ").find(ele => ele.startsWith('todoId'));
+  return str.charAt(7);
+}
 function updateStatusDone(id) {
   createRequest(()=>{},'markItemDone',`itemId=${id}`,'POST');
-  displayItems(document.cookie.charAt(7));
+  displayItems(fetchTodoId(document.cookie));
 }
 
 function updateStatusUndone(id) {
   createRequest(()=>{},'markItemUndone',`itemId=${id}`,'POST');
-  displayItems(document.cookie.charAt(7));
+  displayItems(fetchTodoId(document.cookie));
 }
 
 function getCheckBox(id,status) {
@@ -163,6 +166,7 @@ function displayItems(todoId) {
 
 function displayTitleWithDesc(todo, index) {
   let id = todo.id;
+  document.cookie = `todoId=${id}`;
   return `
   <details class="todoBlock">
   <summary><span class="title" onclick=displayItems(${id})>${getTitle(todo)}</span></summary>

@@ -5,9 +5,20 @@
     "todoList": [
       {
         "id": 1,
-        "title": "1st todo",
-        "description": "somthing",
-        "items": [],
+        "title": "im the first todo",
+        "description": "no need to describe me.",
+        "items": [
+          {
+            "id": 14,
+            "text": "as",
+            "done": false
+          },
+          {
+            "id": 17,
+            "text": "sdfsd",
+            "done": false
+          }
+        ],
         "deletedItems": [
           {
             "id": 1,
@@ -73,8 +84,36 @@
             "id": 13,
             "text": "fsdf",
             "done": false
+          },
+          {
+            "id": 15,
+            "text": "fsfdsf",
+            "done": false
+          },
+          {
+            "id": 16,
+            "text": "dsfdsf",
+            "done": false
           }
         ]
+      },
+      {
+        "id": 2,
+        "title": "2nd",
+        "description": "im the second todo",
+        "items": [
+          {
+            "id": 1,
+            "text": "1st time",
+            "done": false
+          },
+          {
+            "id": 2,
+            "text": "2nd item",
+            "done": false
+          }
+        ],
+        "deletedItems": []
       }
     ],
     "deletedTodos": []
