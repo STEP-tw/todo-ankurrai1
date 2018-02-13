@@ -11,7 +11,7 @@ let fetch = function(todoList, todoId, type='todo') {
   }
     return todoList.find(todo => todo.id == todoId);
 }
-      
+          
 class Todo{
   constructor(id,title,description,items,deletedItems){
     this.id=id;
