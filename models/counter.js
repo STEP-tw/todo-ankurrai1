@@ -6,7 +6,7 @@ class Counter {
   }
 
   increment() {
-    return this.count += this.addend;             
+    return this.count += this.addend;                
   }
 
   reset() {
