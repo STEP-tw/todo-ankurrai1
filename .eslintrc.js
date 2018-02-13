@@ -1,6 +1,11 @@
 module.exports = {
     "env": {
-        "browser": true
+        "browser": true,
+        "amd":true,
+        "es6":true,
+        "mocha":true
+    },
+    "globals":{
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -19,6 +24,9 @@ module.exports = {
         "semi": [
             "error",
             "always"
+        ],
+        "arrow-spacing":[
+          "warn"
         ]
     }
 };

@@ -1,29 +1,29 @@
-const fs = require('fs');
-var morgan = require('morgan');
-var path = require('path');
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
+const fs = require("fs");
+var morgan = require("morgan");
+var path = require("path");
+var accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {flags: "a"});
 
-morgan.token('cookies',function getCookies(req) {
-  return JSON.stringify(req.cookies);
-})
+morgan.token("cookies",function getCookies(req) {
+	return JSON.stringify(req.cookies);
+});
 
-morgan.token('body',function getBody(req) {
-  return JSON.stringify(req.body);
-})
+morgan.token("body",function getBody(req) {
+	return JSON.stringify(req.body);
+});
 const logAndStoreRequest=function (tokens, req, res) {
-  return [
-    tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.status(req, res),
-    tokens.cookies(req,res),
-    tokens.body(req,res),
-    tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms'
-  ].join(' ')
-}
+	return [
+		tokens.method(req, res),
+		tokens.url(req, res),
+		tokens.status(req, res),
+		tokens.cookies(req,res),
+		tokens.body(req,res),
+		tokens.res(req, res, "content-length"), "-",
+		tokens["response-time"](req, res), "ms"
+	].join(" ");
+};
 
 const log = function () {
-  return morgan(logAndStoreRequest, {stream: accessLogStream});
-}
+	return morgan(logAndStoreRequest, {stream: accessLogStream});
+};
 
 exports.log = log;
