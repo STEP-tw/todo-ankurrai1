@@ -5,7 +5,7 @@ class Counter {
     this.addend = addend || 1;
   }
 
-  increment() {
+  increment() {       
     return this.count += this.addend;
   }
 
