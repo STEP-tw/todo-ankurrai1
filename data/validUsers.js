@@ -1,10 +1,10 @@
 let validUsers = [{
-	userName: "ankurrai",
-	password: "ankur"
+  userName: "ankurrai",
+  password: "ankur"
 },
 {
-	userName: "yogi",
-	password: "yogi"
+  userName: "yogi",
+  password: "yogi"
 }
 ];
 exports.validUsers = validUsers;
