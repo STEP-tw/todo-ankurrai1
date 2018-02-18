@@ -3,7 +3,6 @@ let createRequest = function(callBackFunction, contentRequested, bodyMessage = n
   xhr.addEventListener("load", callBackFunction);
   xhr.open(method, contentRequested);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  console.log("this is the ", bodyMessage);
   xhr.send(bodyMessage);
 };
 

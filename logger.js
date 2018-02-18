@@ -1,7 +1,6 @@
-const fs = require("fs");
+const fs = require('fs');
 let morgan = require("morgan");
-let path = require("path");
-let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {flags: "a"});
+let accessLogStream = fs.createWriteStream("./logs/access.log", {flags: "a"});
 
 morgan.token("cookies",function getCookies(req) {
   return JSON.stringify(req.cookies);

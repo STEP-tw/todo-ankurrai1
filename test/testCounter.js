@@ -29,7 +29,6 @@ describe("class Counter",function () {
       assert.equal(counter2.count,5);
     });
   });
-
   describe("reset",function () {
     it("resets its count to initialValue",function () {
       counter2.increment();

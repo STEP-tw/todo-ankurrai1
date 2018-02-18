@@ -1,12 +1,11 @@
 process.env.usersRepo = "./test/testData/usersRepo.json";
 const request = require("supertest");
-let chai = require("chai");
-let assert = chai.assert;
+let assert = require("chai").assert;
 let app = require("../app.js");
-let th = require("./testHelper.js");
 let User = require("../models/user.js");
 
 let end;
+
 describe("app", () => {
   beforeEach(function() {
     handleError = function(done) {

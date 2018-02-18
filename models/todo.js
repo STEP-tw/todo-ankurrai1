@@ -1,6 +1,5 @@
-const Item = require("./item.js");
 let isIndex = type => type == "index";
-
+let Item=require("./item.js");
 const retriveBehaviour = function(classObj, jsonObj={}) {
   return obj = new classObj(...Object.values(jsonObj));
 };
