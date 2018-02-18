@@ -1,18 +1,18 @@
-let createRequest = function(callBackFunction, contentRequested, bodyMessage = null, method = "GET") {
+let createRequest = function(callBack, url, body = null, method = "GET") {
   let xhr = new XMLHttpRequest();
-  xhr.addEventListener("load", callBackFunction);
-  xhr.open(method, contentRequested);
+  xhr.addEventListener("load", callBack);
+  xhr.open(method, url);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.send(bodyMessage);
+  xhr.send(body);
 };
 
 let deleteTodo = function(index, todoId) {
   event.target.parentElement.parentElement.remove();
-  createRequest(() => {}, "deleteTodo", `todoId=${todoId}`, "POST");
+  createRequest(null, "deleteTodo", `todoId=${todoId}`, "POST");
 };
 let deleteItem = function(index, itemId) {
   event.target.parentElement.remove();
-  createRequest(() => {}, "deleteItem", `itemId=${itemId}`, "POST");
+  createRequest(null, "deleteItem", `itemId=${itemId}`, "POST");
 };
 
 let showTodoList = function() {

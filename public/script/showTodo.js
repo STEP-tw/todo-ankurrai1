@@ -11,7 +11,8 @@ function getResetButton() {
 }
 
 function getCancelButton() {
-  return "<button type=\"button\" name=\"cancel\" onclick=\"disappear()\">cancel</button>";
+  let button=`<button type="button"name="cancel" onclick="disappear()">cancel</button>`;
+  return button;
 }
 
 function edit(index, id) {
@@ -82,20 +83,22 @@ function fetchTodoId(cookie) {
   return str.charAt(7);
 }
 function updateStatusDone(id) {
-  createRequest(() => {},"markItemDone",`itemId=${id}`,"POST");
+  createRequest(null,"markItemDone",`itemId=${id}`,"POST");
   displayItems(fetchTodoId(document.cookie));
 }
 
 function updateStatusUndone(id) {
-  createRequest(() => {},"markItemUndone",`itemId=${id}`,"POST");
+  createRequest(null,"markItemUndone",`itemId=${id}`,"POST");
   displayItems(fetchTodoId(document.cookie));
 }
 
 function getCheckBox(id,status) {
   let checkedBox = `
-  <input id=${id} type="checkbox" name="checkBox" value="" onclick="updateStatusUndone(${id})" checked>`;
+  <input id=${id} type="checkbox" name="checkBox"
+  value="" onclick="updateStatusUndone(${id})" checked>`;
   let uncheckedBox = `
-  <input id=${id} type="checkbox" name="checkBox" value="" onclick="updateStatusDone(${id})">`;
+  <input id=${id} type="checkbox" name="checkBox"
+  value="" onclick="updateStatusDone(${id})">`;
 
   return status ? checkedBox : uncheckedBox;
 }
@@ -169,7 +172,8 @@ function displayTitleWithDesc(todo, index) {
   document.cookie = `todoId=${id}`;
   return `
   <details class="todoBlock">
-  <summary><span class="title" onclick=displayItems(${id})>${getTitle(todo)}</span></summary>
+  <summary><span class="title"
+  onclick=displayItems(${id})>${getTitle(todo)}</span></summary>
   ${getDescription(todo)}
   ${getEditButton(index,id,"edit","visible")}
   ${getDeleteButton(index,id,"deleteTodo","visible")}

@@ -175,7 +175,8 @@ describe("HelperLib", function() {
       let dummyFile = "no";
       let fs = {};
       fs.writeFileSync = function(filePath, data) {
-        return filePath += data;
+        filePath += data;
+        return filePath;
       };
       assert.equal(lib.updateData(3, dummyFile, fs), "no3");
     });

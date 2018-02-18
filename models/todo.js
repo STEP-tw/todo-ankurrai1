@@ -1,12 +1,14 @@
 let isIndex = type => type == "index";
 let Item=require("./item.js");
-const retriveBehaviour = function(classObj, jsonObj={}) {
-  return obj = new classObj(...Object.values(jsonObj));
+const retriveBehaviour = function(ClassObj, jsonObj={}) {
+  let obj = new ClassObj(...Object.values(jsonObj));
+  return obj;
 };
 
 let fetch = function(todoList, todoId, type="todo") {
   if (isIndex(type)) {
-    return todoList.findIndex((todo) => todo.id == todoId);
+    let todo=todoList.findIndex((todo) => todo.id == todoId);
+    return todo;
   }
   return todoList.find(todo => todo.id == todoId);
 };

@@ -5,16 +5,19 @@ class Item {
     this.done = false;
   }
   markAsDone() {
-    return this.done = true;
+    this.done = true;
+    return this.done;
   }
   isItemDone() {
     return this.done;
   }
   changeText(newText) {
-    return this.text = newText;
+    this.text = newText;
+    return this.text;
   }
   markAsNotDone() {
-    return this.done = false;
+    this.done = false;
+    return this.done;
   }
 }
 

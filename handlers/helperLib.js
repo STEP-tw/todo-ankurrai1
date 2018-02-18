@@ -62,8 +62,9 @@ const getCookie = function(req, cookieName) {
   return req.cookies[`${cookieName}`] || req.cookies[` ${cookieName}`];
 };
 
-const retriveBehaviour = function(classObj, jsonObj={}) {
-  return obj = new classObj(...Object.values(jsonObj));
+const retriveBehaviour = function(ClassObj, jsonObj={}) {
+  let obj = new ClassObj(...Object.values(jsonObj));
+  return obj;
 };
 
 
@@ -82,7 +83,7 @@ const getTodoId = function (req) {
 const getItemId = function (req) {
   return req.body.itemId;
 };
-const toJsonString = o => JSON.stringify(o, null, 2);
+const toJsonString = object => JSON.stringify(object, null, 2);
 
 const fetchUser = function(usersData, userName) {
   return usersData.find(user => user.name == userName);
@@ -118,7 +119,7 @@ const getFilePath = function (req) {
 };
 
 const replacePageContent = function (data,textToBeReplaced,text) {
-  return data = data.replace(textToBeReplaced, text);
+  return data.replace(textToBeReplaced, text);
 };
 
 const urlIsOneOf = function(urls,url) {

@@ -7,7 +7,6 @@ let config = {
     amd: true,
   },
   globals: {},
-  extends: "eslint:recommended",
   rules: {
     semi: 2,
     indent: ["error", 2, {
@@ -25,7 +24,7 @@ let config = {
     "no-unmodified-loop-condition": 2,
     "curly": 2,
     "max-len": ["error", {
-      code: 80
+      code: 100
     }],
     "max-depth": 2,
     "max-lines": ["error", {

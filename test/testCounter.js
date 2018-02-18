@@ -2,6 +2,7 @@ const prefix= "../models/";
 const Counter = require(`${prefix}counter.js`).Counter;
 const assert = require("chai").assert;
 
+let counter,counter2;
 describe("class Counter",function () {
   beforeEach(function () {
     counter = new Counter;

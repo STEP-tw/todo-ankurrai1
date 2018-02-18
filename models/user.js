@@ -17,7 +17,8 @@ class User {
   }
 
   emptyList(repo) {
-    return this.todoList = [];
+    this.todoList=[];
+    return this.todoList;
   }
 
   addTodo(todo) {
